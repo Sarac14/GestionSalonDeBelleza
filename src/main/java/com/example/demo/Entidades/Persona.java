@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "persona")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

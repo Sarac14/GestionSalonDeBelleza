@@ -3,6 +3,7 @@ package com.example.demo.Entidades;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "persona")

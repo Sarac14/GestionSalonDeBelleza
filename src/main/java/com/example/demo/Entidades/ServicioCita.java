@@ -21,6 +21,9 @@ public class ServicioCita {
     @JoinColumn(name = "empleado_id")
     private Empleado empleado;
 
+    @OneToOne(mappedBy = "servicioCita", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Detalle detalle;
+
     public ServicioCita(Long id, Cita cita, Servicio servicio, Empleado empleado) {
         this.id = id;
         this.cita = cita;

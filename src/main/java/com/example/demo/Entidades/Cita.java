@@ -2,7 +2,6 @@ package com.example.demo.Entidades;
 
 import jakarta.persistence.*;
 
-import java.sql.Time;
 import java.util.Date;
 
 @Entity

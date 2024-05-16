@@ -14,7 +14,8 @@ public class Empleado extends Persona implements Serializable {
 
     @Column(name = "direccion")
     private String direccion;
-
+    @Column(name = "categoria")
+    private String categoria;
     @OneToOne
     @JoinColumn(name = "nomina_id")
     private Nomina nomina;
@@ -22,11 +23,12 @@ public class Empleado extends Persona implements Serializable {
     @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Factura> facturas;
 
-    public Empleado(Long cedula, String nombre, String apellido, Date fechaNacimiento, String correoElectronico, Integer telefono, String genero, String direccion, Nomina nomina) {
+    public Empleado(Long cedula, String nombre, String apellido, Date fechaNacimiento, String correoElectronico, Integer telefono, String genero, String direccion, Nomina nomina, String Categoria) {
         super(cedula, nombre, apellido, fechaNacimiento, correoElectronico, telefono);
         this.genero = genero;
         this.direccion = direccion;
         this.nomina = nomina;
+        this.categoria = categoria;
     }
 
     public Empleado() {
@@ -55,6 +57,14 @@ public class Empleado extends Persona implements Serializable {
 
     public void setNomina(Nomina nomina) {
         this.nomina = nomina;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 }
 

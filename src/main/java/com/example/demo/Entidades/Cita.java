@@ -4,10 +4,11 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "cita")
-public class Cita implements Serializable {
+public class Cita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +22,9 @@ public class Cita implements Serializable {
 
     @Column(name = "hora")
     private Date hora;
+
+    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL)
+    private List<ServicioCita> serviciosCita = new ArrayList<>();
 
     public Cita(Long id, Cliente cliente, Date fecha, Date hora) {
         this.id = id;
@@ -63,5 +67,13 @@ public class Cita implements Serializable {
 
     public void setHora(Date hora) {
         this.hora = hora;
+    }
+
+    public List<ServicioCita> getServiciosCita() {
+        return serviciosCita;
+    }
+
+    public void setServiciosCita(List<ServicioCita> detallesCita) {
+        this.serviciosCita = detallesCita;
     }
 }

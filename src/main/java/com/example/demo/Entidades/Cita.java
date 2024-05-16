@@ -2,11 +2,12 @@ package com.example.demo.Entidades;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "cita")
-public class Cita {
+public class Cita implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -12,7 +12,7 @@ public class ProductoOrdenCompra {
     private Long id;
 
     @ManyToOne
-    @Column(name = "ordenCompra")
+    @JoinColumn(name = "orden_compra_id")
     private OrdenCompra ordenCompra;
 
     @ManyToMany

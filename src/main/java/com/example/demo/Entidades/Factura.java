@@ -149,4 +149,3 @@ public class Factura {
         this.subTotal = subTotal;
     }
 }
-

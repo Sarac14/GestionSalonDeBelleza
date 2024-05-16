@@ -29,9 +29,7 @@ public class Servicio {
         this.categoria = categoria;
     }
 
-    public Servicio() {
-
-    }
+    public Servicio() {}
 
     public Long getId() {
         return id;

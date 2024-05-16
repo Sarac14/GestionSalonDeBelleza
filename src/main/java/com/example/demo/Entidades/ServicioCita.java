@@ -3,25 +3,26 @@ package com.example.demo.Entidades;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "servicio_cita")
+@Table(name = "servicioCita")
 public class ServicioCita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "cita_id")
+    @JoinColumn(name = "idCita")
     private Cita cita;
 
     @ManyToOne
-    @JoinColumn(name = "servicio_id")
+    @JoinColumn(name = "idServicio")
     private Servicio servicio;
 
     @ManyToOne
-    @JoinColumn(name = "empleado_id")
+    @JoinColumn(name = "idEmpleado")
     private Empleado empleado;
 
-    @OneToOne(mappedBy = "servicioCita", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne
+    @JoinColumn(name = "idDetalle")
     private Detalle detalle;
 
     public ServicioCita(Long id, Cita cita, Servicio servicio, Empleado empleado) {

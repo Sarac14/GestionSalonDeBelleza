@@ -2,12 +2,13 @@ package com.example.demo.Entidades;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "empleado")
-public class Empleado extends Persona {
+public class Empleado extends Persona implements Serializable {
     @Column(name = "genero")
     private String genero;
 

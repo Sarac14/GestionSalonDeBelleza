@@ -2,6 +2,8 @@ package com.example.demo.Entidades;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "detalle")
 public class Detalle {
@@ -12,8 +14,10 @@ public class Detalle {
     @OneToOne(mappedBy = "detalle", cascade = CascadeType.ALL, orphanRemoval = true)
     private VentaProducto ventaProducto;
 
-    @OneToOne(mappedBy = "detalle", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "idServicioCita")
-    private ServicioCita servicioCita;
+    @OneToMany(mappedBy = "detalle")
+    private List<ServicioCita> serviciosCita;
 
+    @ManyToOne
+    @JoinColumn(name = "idCita")
+    private Cita cita;
 }

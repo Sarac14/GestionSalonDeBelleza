@@ -12,10 +12,13 @@ public class ProductoProveedor {
     private Long id;
 
     @ManyToMany
-    @JoinColumn(name = "idProducto")
+    @JoinTable(
+            name = "producto_proveedor_producto",
+            joinColumns = @JoinColumn(name = "producto_proveedor_id"),
+            inverseJoinColumns = @JoinColumn(name = "idProducto")
+    )
     private List<Producto> productos;
 
-    @ManyToOne
-    @JoinColumn(name = "idProveedor")
-    private Proveedor proveedor;
+    @ManyToMany(mappedBy = "productosProveedor")
+    private List<Proveedor> proveedores;
 }

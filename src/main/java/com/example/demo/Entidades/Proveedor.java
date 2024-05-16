@@ -26,6 +26,11 @@ public class Proveedor {
     @Column(name= "direccion")
     private String direccion;
 
-    @ManyToMany(mappedBy = "productosProveedor")
-    private List<ProductoProveedor> ProductoProveedor;
+    @ManyToMany
+    @JoinTable(
+            name = "producto_proveedor_proveedor",
+            joinColumns = @JoinColumn(name = "proveedor_id"),
+            inverseJoinColumns = @JoinColumn(name = "producto_proveedor_id")
+    )
+    private List<ProductoProveedor> productosProveedor;
 }

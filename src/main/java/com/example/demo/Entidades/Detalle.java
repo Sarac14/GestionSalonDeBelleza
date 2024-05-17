@@ -20,4 +20,7 @@ public class Detalle {
     @ManyToOne
     @JoinColumn(name = "idCita")
     private Cita cita;
+
+    public Detalle() {
+    }
 }

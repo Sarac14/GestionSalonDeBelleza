@@ -4,6 +4,7 @@ import com.example.demo.Entidades.Cita;
 import com.example.demo.repositorios.CitaRepository;
 import com.example.demo.servicios.CitaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,9 +45,15 @@ public class CitaController {
     }
 
     // Actualizar una cita
+//    @PutMapping("/modificar/{id}")
+//    public Cita actualizarDetallesDeCita(@PathVariable Long id, @RequestBody Cita citaActualizada) {
+//        return citaService.actualizarDetallesDeCita(id, citaActualizada);
+//    }
+
     @PutMapping("/modificar/{id}")
-    public Cita actualizarDetallesDeCita(@PathVariable Long id, @RequestBody Cita citaActualizada) {
-        return citaService.actualizarDetallesDeCita(id, citaActualizada);
+    public ResponseEntity<Cita> actualizarDetallesDeCita(@PathVariable Long id, @RequestBody Cita citaActualizada) {
+        Cita cita = citaService.actualizarDetallesDeCita(id, citaActualizada);
+        return ResponseEntity.ok(cita);
     }
 
 }

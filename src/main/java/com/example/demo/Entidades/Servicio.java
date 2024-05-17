@@ -29,7 +29,16 @@ public class Servicio {
         this.categoria = categoria;
     }
 
-    public Servicio() {}
+    public Servicio(String nombre, float precio, String categoria) {
+        this.nombre = nombre;
+        this.precioBase = precio;
+        this.categoria = categoria;
+    }
+
+    public Servicio() {
+
+    }
+
 
     public Long getId() {
         return id;

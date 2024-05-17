@@ -23,7 +23,7 @@ public class Empleado extends Persona implements Serializable {
     @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Factura> facturas;
 
-    public Empleado(Long cedula, String nombre, String apellido, Date fechaNacimiento, String correoElectronico, Integer telefono, String genero, String direccion, Nomina nomina, String Categoria) {
+    public Empleado(int cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono, String genero, String direccion, Nomina nomina, String Categoria) {
         super(cedula, nombre, apellido, fechaNacimiento, correoElectronico, telefono);
         this.genero = genero;
         this.direccion = direccion;
@@ -33,6 +33,11 @@ public class Empleado extends Persona implements Serializable {
 
     public Empleado() {
 
+    }
+
+    public Empleado(String nombre, String categoria) {
+        this.nombre = nombre;
+        this.categoria = categoria;
     }
 
     public String getGenero() {

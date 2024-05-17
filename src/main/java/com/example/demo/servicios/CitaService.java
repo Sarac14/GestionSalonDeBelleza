@@ -30,7 +30,7 @@ public class CitaService {
         System.out.println("Creando nueva cita...");
         System.out.println("Cita recibida: " + cita);
 
-        Cliente cliente = clienteRepository.findById(Math.toIntExact(cita.getCliente().getCedula()))
+        Cliente cliente = clienteRepository.findById(Math.toIntExact(cita.getCliente().getId()))
                 .orElseThrow(() -> new NoSuchElementException("Cliente no encontrado"));
 
         // Crear la cita
@@ -67,84 +67,23 @@ public class CitaService {
         return citaRepository.save(newCita);
     }
 
-    /*public Cita actualizarCitaConDetalles(Long idCita, Cita citaActualizada) {
-        // Obtener la cita existente
-        Cita citaExistente = citaRepository.findById(Math.toIntExact(idCita))
-                .orElseThrow(() -> new NoSuchElementException("Cita no encontrada"));
 
-        // Actualizar la fecha y hora de la cita si se proporcionan en la cita actualizada
-        if (citaActualizada.getFecha() != null) {
-            citaExistente.setFecha(citaActualizada.getFecha());
-        }
-        if (citaActualizada.getHora() != null) {
-            citaExistente.setHora(citaActualizada.getHora());
-        }
-
-        // Actualizar los detalles de la cita (servicios y empleados)
-        if (citaActualizada.getDetallesCita() != null && !citaActualizada.getDetallesCita().isEmpty()) {
-            List<DetalleCita> nuevosDetalles = new ArrayList<>();
-            for (DetalleCita detalleActualizado : citaActualizada.getDetallesCita()) {
-                DetalleCita detalleExistente = null;
-                // Buscar si el detalle ya existe en la cita actual
-                for (DetalleCita detalle : citaExistente.getDetallesCita()) {
-                    if (detalle.getId().equals(detalleActualizado.getId())) {
-                        detalleExistente = detalle;
-                        break;
-                    }
-                }
-                if (detalleExistente != null) {
-                    // Actualizar el detalle existente con los datos de la cita actualizada
-                    if (detalleActualizado.getServicio() != null) {
-                        detalleExistente.setServicio(detalleActualizado.getServicio());
-                    }
-                    if (detalleActualizado.getEmpleado() != null) {
-                        detalleExistente.setEmpleado(detalleActualizado.getEmpleado());
-                    }
-                    // Agregar el detalle actualizado a la lista de detalles nuevos
-                    nuevosDetalles.add(detalleExistente);
-                } else {
-                    // Si el detalle no existe en la cita actual, agregar el detalle actualizado a la lista de detalles nuevos
-                    nuevosDetalles.add(detalleActualizado);
-                }
-            }
-            // Establecer los nuevos detalles en la cita existente
-            citaExistente.setDetallesCita(nuevosDetalles);
-        }
-
-        // Guardar la cita actualizada en la base de datos
-        return citaRepository.save(citaExistente);
-    }*/
-
-    /*public Cita actualizarCita(Long idCita, @RequestBody Cliente clienteActualizado) {
-        Cita citaExistente = citaRepository.findById(Math.toIntExact(idCita))
-                .orElseThrow(() -> new NoSuchElementException("Cita no encontrada"));
-
-        // Actualizar el cliente de la cita
-        citaExistente.setCliente(clienteActualizado);
-
-        // Guardar la cita actualizada en la base de datos
-        return citaRepository.save(citaExistente);
-    }
-*/
     public Cita actualizarDetallesDeCita(Long idCita, Cita citaActualizada) {
-        // Obtener la cita existente
         Cita citaExistente = citaRepository.findById(Math.toIntExact(idCita))
                 .orElseThrow(() -> new NoSuchElementException("Cita no encontrada"));
 
         // Actualizar los detalles de la cita
-        for (ServicioCita detalleActualizado : citaActualizada.getServiciosCita()) {
-            for (ServicioCita detalleExistente : citaExistente.getServiciosCita()) {
-                if (detalleActualizado.getId().equals(detalleExistente.getId())) {
-                    detalleExistente.setServicio(detalleActualizado.getServicio());
-                    detalleExistente.setEmpleado(detalleActualizado.getEmpleado());
-                    break;
-                }
-            }
-        }
+        citaExistente.setFecha(citaActualizada.getFecha());
+        citaExistente.setHora(citaActualizada.getHora());
+        citaExistente.setCliente(citaActualizada.getCliente());
+
+        List<ServicioCita> detallesExistentes = citaExistente.getServiciosCita();
+        detallesExistentes.clear();
+        detallesExistentes.addAll(citaActualizada.getServiciosCita());
+        detallesExistentes.forEach(detalle -> detalle.setCita(citaExistente));
 
         // Guardar la cita actualizada en la base de datos
         return citaRepository.save(citaExistente);
     }
-
 }
 

@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,9 +18,13 @@ public class Cliente extends Persona {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Factura> facturas;
 
-    public Cliente(Long cedula, String nombre, String apellido, Date fechaNacimiento, String correoElectronico, Integer telefono, Long idClienteCita) {
+    public Cliente(int cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono, Long idClienteCita) {
         super(cedula, nombre, apellido, fechaNacimiento, correoElectronico, telefono);
         this.idClienteCita = idClienteCita;
+    }
+
+    public Cliente(int cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono) {
+        super(cedula, nombre, apellido, fechaNacimiento, correoElectronico, telefono);
     }
 
     public Cliente() {
@@ -28,6 +33,10 @@ public class Cliente extends Persona {
 
     public Long getIdClienteCita() {
         return idClienteCita;
+    }
+
+    public Cliente(String nombre) {
+        this.nombre = nombre;
     }
 
     public void setIdClienteCita(Long idClienteCita) {

@@ -3,12 +3,12 @@ package com.example.demo.Entidades;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "cita")
-public class Cita {
+public class Cita implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,15 +18,15 @@ public class Cita {
     private Cliente cliente;
 
     @Column(name = "fecha")
-    private Date fecha;
+    private String fecha;
 
     @Column(name = "hora")
-    private Date hora;
+    private String hora;
 
     @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL)
     private List<ServicioCita> serviciosCita = new ArrayList<>();
 
-    public Cita(Long id, Cliente cliente, Date fecha, Date hora) {
+    public Cita(Long id, Cliente cliente, String fecha, String hora) {
         this.id = id;
         this.cliente = cliente;
         this.fecha = fecha;
@@ -53,19 +53,19 @@ public class Cita {
         this.cliente = cliente;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
-    public Date getHora() {
+    public String getHora() {
         return hora;
     }
 
-    public void setHora(Date hora) {
+    public void setHora(String hora) {
         this.hora = hora;
     }
 

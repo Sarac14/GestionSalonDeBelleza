@@ -2,6 +2,7 @@ package com.example.demo.Entidades;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -11,24 +12,25 @@ import java.util.List;
 public class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cedula;
+    private Long id;
+    private int cedula;
 
     @Column(name = "nombre")
-    private String nombre;
+    public String nombre;
 
     @Column(name = "apellido")
     private String apellido;
 
     @Column(name = "fecha_nacimiento")
-    private Date fechaNacimiento;
+    private String fechaNacimiento;
 
     @Column(name = "correo_electronico")
     private String correoElectronico;
 
     @Column(name = "telefono")
-    private Integer telefono;
+    private int telefono;
 
-    public Persona(Long cedula, String nombre, String apellido, Date fechaNacimiento, String correoElectronico, Integer telefono) {
+    public Persona(int cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -41,11 +43,11 @@ public class Persona {
 
     }
 
-    public Long getCedula() {
+    public int getCedula() {
         return cedula;
     }
 
-    public void setCedula(Long cedula) {
+    public void setCedula(int cedula) {
         this.cedula = cedula;
     }
 
@@ -65,11 +67,11 @@ public class Persona {
         this.apellido = apellido;
     }
 
-    public Date getFechaNacimiento() {
+    public String getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
@@ -81,11 +83,19 @@ public class Persona {
         this.correoElectronico = correoElectronico;
     }
 
-    public Integer getTelefono() {
+    public int getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(Integer telefono) {
+    public void setTelefono(int telefono) {
         this.telefono = telefono;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tiempo de Espera</title>
+    <script>
+        function actualizarTiempoEspera(citaId) {
+            fetch(`/cita/tiempoEspera/${citaId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tiempoEspera = data; // Response with hours, minutes, seconds
+                    document.getElementById('tiempoEspera').innerText = formatDuration(tiempoEspera);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function formatDuration(duration) {
+            const hours = duration.hours;
+            const minutes = duration.minutes;
+            const seconds = duration.seconds;
+            return `${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const citaId = 1; // Reemplazar con el ID de la cita correspondiente
+            actualizarTiempoEspera(citaId);
+            setInterval(() => actualizarTiempoEspera(citaId), 1000); // Actualizar cada segundo
+        });
+    </script>
+</head>
+<body>
+<h1>Tiempo de Espera</h1>
+<div id="tiempoEspera"></div>
+</body>
+</html>

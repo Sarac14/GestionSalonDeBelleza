@@ -1,16 +1,21 @@
 package com.example.demo.Entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 
 @Entity
 @Table(name = "servicioCita")
-public class ServicioCita {
+public class ServicioCita implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "idCita")
+    @JsonBackReference
+
     private Cita cita;
 
     @ManyToOne
@@ -66,5 +71,13 @@ public class ServicioCita {
 
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
+    }
+
+    public Detalle getDetalle() {
+        return detalle;
+    }
+
+    public void setDetalle(Detalle detalle) {
+        this.detalle = detalle;
     }
 }

@@ -3,8 +3,12 @@ package com.example.demo.Entidades;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "cita")
@@ -18,15 +22,16 @@ public class Cita implements Serializable{
     private Cliente cliente;
 
     @Column(name = "fecha")
-    private String fecha;
+    private LocalDate fecha;
 
     @Column(name = "hora")
-    private String hora;
+    private LocalTime hora;
 
-    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ServicioCita> serviciosCita = new ArrayList<>();
 
-    public Cita(Long id, Cliente cliente, String fecha, String hora) {
+    public Cita(Long id, Cliente cliente, LocalDate fecha, LocalTime  hora) {
         this.id = id;
         this.cliente = cliente;
         this.fecha = fecha;
@@ -53,19 +58,19 @@ public class Cita implements Serializable{
         this.cliente = cliente;
     }
 
-    public String getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
-    public String getHora() {
+    public LocalTime  getHora() {
         return hora;
     }
 
-    public void setHora(String hora) {
+    public void setHora(LocalTime  hora) {
         this.hora = hora;
     }
 

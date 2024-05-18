@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.Duration;
+
 
 @RestController
 @RequestMapping("/cita")
@@ -55,5 +57,14 @@ public class CitaController {
         Cita cita = citaService.actualizarDetallesDeCita(id, citaActualizada);
         return ResponseEntity.ok(cita);
     }
+
+    @GetMapping("/tiempoEspera/{id}")
+    public ResponseEntity<CitaService.TiempoEsperaResponse> obtenerTiempoEspera(@PathVariable Long id) {
+        CitaService.TiempoEsperaResponse tiempoEspera = citaService.obtenerTiempoEsperaFormateado(id);
+        return ResponseEntity.ok(tiempoEspera);
+    }
+
+
+
 
 }

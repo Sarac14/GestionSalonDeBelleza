@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,7 +31,7 @@ public class CitaService {
     @Autowired
     private DetalleRepository detalleRepository;
 
-    public Cita crearCitaConValidacion(Cita cita) {
+/*    public Cita crearCitaConValidacion(Cita cita) {
         System.out.println("Creando nueva cita...");
         System.out.println("Cita recibida: " + cita);
 
@@ -63,9 +65,55 @@ public class CitaService {
 
         newCita.setServiciosCita(serviciosCita);
         return citaRepository.save(newCita);
+    }*/
+
+
+    public Cita crearCitaConValidacion(Cita cita) {
+        System.out.println("Creando nueva cita...");
+        System.out.println("Cita recibida: " + cita);
+
+        Cliente cliente = clienteRepository.findById(Math.toIntExact(cita.getCliente().getId()))
+                .orElseThrow(() -> new NoSuchElementException("Cliente no encontrado"));
+
+        // Crear la cita
+        Cita newCita = new Cita();
+        newCita.setFecha(cita.getFecha());
+        newCita.setHora(cita.getHora());
+        newCita.setCliente(cliente);
+
+        List<ServicioCita> serviciosCita = new ArrayList<>();
+
+        for (ServicioCita servicioCita : cita.getServiciosCita()) {
+            Servicio servicio = servicioRepository.findById(Math.toIntExact(servicioCita.getServicio().getId()))
+                    .orElseThrow(() -> new NoSuchElementException("Servicio no encontrado"));
+            Empleado empleado = empleadoRepository.findById(Math.toIntExact(servicioCita.getEmpleado().getId()))
+                    .orElseThrow(() -> new NoSuchElementException("Empleado no encontrado"));
+
+            // Verificar si el empleado está disponible en la fecha y hora solicitada
+            if (!estaEmpleadoDisponible(empleado, cita.getFecha(), cita.getHora())) {
+                throw new RuntimeException("El empleado con ID: " + empleado.getId() + " no está disponible en la fecha y hora solicitada.");
+            }
+
+            if (!servicio.getCategoria().equals(empleado.getCategoria())) {
+                throw new RuntimeException("La categoría del servicio y del empleado no coinciden para el servicio con ID: " + servicio.getId());
+            }
+
+            ServicioCita newServicioCita = new ServicioCita();
+            newServicioCita.setCita(newCita);
+            newServicioCita.setServicio(servicio);
+            newServicioCita.setEmpleado(empleado);
+            serviciosCita.add(newServicioCita);
+        }
+
+        newCita.setServiciosCita(serviciosCita);
+        return citaRepository.save(newCita);
     }
 
-
+    // Método para verificar si un empleado está disponible en una fecha y hora específicas
+    private boolean estaEmpleadoDisponible(Empleado empleado, LocalDate fecha, LocalTime hora) {
+        List<Cita> citas = citaRepository.findByEmpleadoAndFechaAndHora(empleado.getId(), fecha, hora);
+        return citas.isEmpty();
+    }
 
 
     public Cita actualizarDetallesDeCita(Long idCita, Cita citaActualizada) {

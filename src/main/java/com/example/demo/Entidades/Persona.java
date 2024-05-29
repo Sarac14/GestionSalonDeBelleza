@@ -13,6 +13,8 @@ public class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "cedula")
     private int cedula;
 
     @Column(name = "nombre")

@@ -2,11 +2,9 @@ package com.example.demo.config;
 
 import com.example.demo.Entidades.Cliente;
 import com.example.demo.Entidades.Empleado;
+import com.example.demo.Entidades.Rol;
 import com.example.demo.Entidades.Servicio;
-import com.example.demo.repositorios.CitaRepository;
-import com.example.demo.repositorios.ClienteRepository;
-import com.example.demo.repositorios.EmpleadoRepository;
-import com.example.demo.repositorios.ServicioRepository;
+import com.example.demo.repositorios.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -18,13 +16,16 @@ public class DataInitializer implements CommandLineRunner {
     private final ClienteRepository clienteRepository;
     private final ServicioRepository servicioRepository;
     private static EmpleadoRepository empleadoRepository;
+    private final RolRepository rolRepository;
+    private final UsuarioRepository usuarioRepository;
 
 
-    public DataInitializer(ClienteRepository clienteRepository, ServicioRepository servicioRepository, EmpleadoRepository empleadoRepository, CitaRepository citaRepository) {
+    public DataInitializer(ClienteRepository clienteRepository, ServicioRepository servicioRepository, EmpleadoRepository empleadoRepository, CitaRepository citaRepository, RolRepository rolRepository, UsuarioRepository usuarioRepository) {
         this.clienteRepository = clienteRepository;
         this.servicioRepository = servicioRepository;
         this.empleadoRepository = empleadoRepository;
-
+        this.rolRepository = rolRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -49,6 +50,12 @@ public class DataInitializer implements CommandLineRunner {
             empleadoRepository.save(new Empleado("María López", "Lavado"));
             empleadoRepository.save(new Empleado("Pedro Fernández", "Lavado"));
             empleadoRepository.save(new Empleado("Laura González", "Uñas"));
+        }
+
+        if (rolRepository.count() == 0) {
+            rolRepository.save(new Rol("ROLE_ADMIN"));
+            rolRepository.save(new Rol("ROLE_EMPLEADO"));
+            rolRepository.save(new Rol("ROLE_CLIENTE"));
         }
     }
 }

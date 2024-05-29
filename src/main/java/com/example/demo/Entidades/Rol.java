@@ -17,6 +17,10 @@ public class Rol {
         this.descripcion = descripcion;
     }
 
+    public Rol(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     public Rol() {
 
     }

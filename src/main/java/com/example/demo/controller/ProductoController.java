@@ -67,6 +67,12 @@ public class ProductoController {
         }
     }
 
+    /*
+    Para asigarnar proveedores a un proveedor:
+    Put: http://localhost:8080/productos/{idProducto}/proveedores
+    JSON: [1,2] ---> los id de los proveedores
+
+     */
     @PutMapping("/{productoId}/proveedores")
     public ResponseEntity<Producto> asignarProveedoresAProducto(@PathVariable Long productoId, @RequestBody List<Long> proveedoresIds) {
         Producto producto = productoService.getProductoById(productoId).orElseThrow(() -> new ExpressionException("Producto no encontrado"));

@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "productoVenta")
@@ -16,7 +17,7 @@ public class ProductoVenta extends Producto{
     @Column(name = "descuento")
     private float descuento;
 
-    public ProductoVenta(Long id, String marca, String nombre, String descripcion, int cantidadStock, float precioCompra, int cantidadMinima, List<com.example.demo.Entidades.ProductoProveedor> productoProveedor, float precioVenta, float descuento) {
+    public ProductoVenta(Long id, String marca, String nombre, String descripcion, int cantidadStock, float precioCompra, int cantidadMinima, Set<ProductoProveedor> productoProveedor, float precioVenta, float descuento) {
         super(id, marca, nombre, descripcion, cantidadStock, precioCompra, cantidadMinima, productoProveedor);
         this.precioVenta = precioVenta;
         this.descuento = descuento;

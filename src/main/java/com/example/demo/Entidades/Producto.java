@@ -1,8 +1,11 @@
 package com.example.demo.Entidades;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "producto")
@@ -30,10 +33,11 @@ public class Producto {
     @Column(name= "cantidadMinima")
     private int cantidadMinima;
 
-    @ManyToMany(mappedBy = "productos")
-    private List<ProductoProveedor> proveedores;
+    @OneToMany(mappedBy = "producto")
+    @JsonManagedReference
+    private Set<ProductoProveedor> proveedoresProducto = new HashSet<>();
 
-    public Producto(Long id, String marca, String nombre, String descripcion, int cantidadStock, float precioCompra, int cantidadMinima, List<ProductoProveedor> proveedores) {
+    public Producto(Long id, String marca, String nombre, String descripcion, int cantidadStock, float precioCompra, int cantidadMinima, Set<ProductoProveedor> proveedoresProducto) {
         this.id = id;
         Marca = marca;
         this.nombre = nombre;
@@ -41,7 +45,7 @@ public class Producto {
         this.cantidadStock = cantidadStock;
         this.precioCompra = precioCompra;
         this.cantidadMinima = cantidadMinima;
-        this.proveedores = proveedores;
+        this.proveedoresProducto = proveedoresProducto;
     }
 
     public Producto() {
@@ -104,11 +108,11 @@ public class Producto {
         this.cantidadMinima = cantidadMinima;
     }
 
-    public List<ProductoProveedor> getProveedores() {
-        return proveedores;
+    public Set<ProductoProveedor> getProveedoresProducto() {
+        return proveedoresProducto;
     }
 
-    public void setProveedores(List<ProductoProveedor> proveedores) {
-        this.proveedores = proveedores;
+    public void setProveedoresProducto(Set<ProductoProveedor> proveedores) {
+        this.proveedoresProducto = proveedores;
     }
 }

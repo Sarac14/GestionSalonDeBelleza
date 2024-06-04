@@ -1,24 +1,56 @@
 package com.example.demo.Entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
-@Table(name = "productoProveedor")
+@Table(name = "producto_proveedor")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ProductoProveedor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    private ProductoProveedorId id;
 
-    @ManyToMany
-    @JoinTable(
-            name = "producto_proveedor_producto",
-            joinColumns = @JoinColumn(name = "producto_proveedor_id"),
-            inverseJoinColumns = @JoinColumn(name = "idProducto")
-    )
-    private List<Producto> productos;
+    /*@ManyToOne
+    @MapsId("productoId")
+    @JoinColumn(name = "producto_id")
+    private Producto producto;*/
+    @ManyToOne
+    @MapsId("productoId")
+    @JoinColumn(name = "producto_id", insertable = false, updatable = false)
+    @JsonBackReference
+    private Producto producto;
 
-    @ManyToMany(mappedBy = "productosProveedor")
-    private List<Proveedor> proveedores;
+    @ManyToOne
+    @MapsId("proveedorId")
+    @JoinColumn(name = "proveedor_id")
+    private Proveedor proveedor;
+
+    public ProductoProveedorId getId() {
+        return id;
+    }
+
+    public void setId(ProductoProveedorId id) {
+        this.id = id;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
+    }
 }

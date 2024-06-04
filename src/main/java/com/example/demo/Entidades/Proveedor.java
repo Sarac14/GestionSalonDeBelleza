@@ -26,11 +26,65 @@ public class Proveedor {
     @Column(name= "direccion")
     private String direccion;
 
-    @ManyToMany
-    @JoinTable(
-            name = "producto_proveedor_proveedor",
-            joinColumns = @JoinColumn(name = "proveedor_id"),
-            inverseJoinColumns = @JoinColumn(name = "producto_proveedor_id")
-    )
+    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductoProveedor> productosProveedor;
+
+    public Proveedor() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombreEmpresa() {
+        return nombreEmpresa;
+    }
+
+    public void setNombreEmpresa(String nombreEmpresa) {
+        this.nombreEmpresa = nombreEmpresa;
+    }
+
+    public String getNombreContacto() {
+        return nombreContacto;
+    }
+
+    public void setNombreContacto(String nombreContacto) {
+        this.nombreContacto = nombreContacto;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public List<ProductoProveedor> getProductosProveedor() {
+        return productosProveedor;
+    }
+
+    public void setProductosProveedor(List<ProductoProveedor> productosProveedor) {
+        this.productosProveedor = productosProveedor;
+    }
 }

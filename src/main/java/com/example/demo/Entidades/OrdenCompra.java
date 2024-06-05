@@ -91,4 +91,12 @@ public class OrdenCompra {
     public void setEstadoOrdenCompra(String estadoOrdenCompra) {
         this.estadoOrdenCompra = estadoOrdenCompra;
     }
+
+    public List<ProductoOrdenCompra> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<ProductoOrdenCompra> productos) {
+        this.productos = productos;
+    }
 }

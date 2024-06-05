@@ -1,14 +1,14 @@
 package com.example.demo.config;
 
-import com.example.demo.Entidades.Cliente;
-import com.example.demo.Entidades.Empleado;
-import com.example.demo.Entidades.Rol;
-import com.example.demo.Entidades.Servicio;
+import com.example.demo.Entidades.*;
 import com.example.demo.repositorios.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -18,14 +18,21 @@ public class DataInitializer implements CommandLineRunner {
     private static EmpleadoRepository empleadoRepository;
     private final RolRepository rolRepository;
     private final UsuarioRepository usuarioRepository;
+    private final ProductoRepository productoRepository;
+    private final ProveedorRepository proveedorRepository;
+    private final ProductoProveedorRepository productoProveedorRepository;
 
 
-    public DataInitializer(ClienteRepository clienteRepository, ServicioRepository servicioRepository, EmpleadoRepository empleadoRepository, CitaRepository citaRepository, RolRepository rolRepository, UsuarioRepository usuarioRepository) {
+    public DataInitializer(ClienteRepository clienteRepository, ServicioRepository servicioRepository, EmpleadoRepository empleadoRepository, CitaRepository citaRepository, RolRepository rolRepository, UsuarioRepository usuarioRepository, ProductoRepository productoRepository, ProveedorRepository proveedorRepository, ProductoProveedorRepository productoProveedorRepository) {
         this.clienteRepository = clienteRepository;
         this.servicioRepository = servicioRepository;
         this.empleadoRepository = empleadoRepository;
         this.rolRepository = rolRepository;
         this.usuarioRepository = usuarioRepository;
+        this.productoRepository = productoRepository;
+        this.proveedorRepository = proveedorRepository;
+        this.productoProveedorRepository = productoProveedorRepository;
+
     }
 
     @Override
@@ -57,5 +64,38 @@ public class DataInitializer implements CommandLineRunner {
             rolRepository.save(new Rol("ROLE_EMPLEADO"));
             rolRepository.save(new Rol("ROLE_CLIENTE"));
         }
+
+        /*List<Proveedor> proveedores = new ArrayList<>();
+        if (proveedorRepository.count() == 0) {
+            Proveedor proveedor1 = new Proveedor("Proveedor 1", "Contacto 1", "123456789", "contacto1@proveedor.com", "Dirección 1", new ArrayList<>());
+            Proveedor proveedor2 = new Proveedor("Proveedor 2", "Contacto 2", "987654321", "contacto2@proveedor.com", "Dirección 2", new ArrayList<>());
+            proveedores.add(proveedor1);
+            proveedores.add(proveedor2);
+            proveedorRepository.saveAll(proveedores);
+        }
+
+        List<Producto> productos = new ArrayList<>();
+        if (productoRepository.count() == 0) {
+            Producto producto1 = new Producto("Marca 1", "Producto 1", "Descripción del Producto 1", 5, 100.0f, 5,50, new HashSet<>());
+            Producto producto2 = new Producto("Marca 2", "Producto 2", "Descripción del Producto 2", 3, 150.0f, 5, 30,new HashSet<>());
+            Producto producto3 = new Producto("Marca 3", "Producto 3", "Descripción del Producto 3", 10, 200.0f, 2,20, new HashSet<>());
+            productos.add(producto1);
+            productos.add(producto2);
+            productos.add(producto3);
+            productoRepository.saveAll(productos);
+        }
+
+        if (productoProveedorRepository.count() == 0) {
+            for (Proveedor proveedor : proveedores) {
+                for (Producto producto : productos) {
+                    ProductoProveedor productoProveedor = new ProductoProveedor();
+                    ProductoProveedorId productoProveedorId = new ProductoProveedorId(producto.getId(), proveedor.getId());
+                    productoProveedor.setId(productoProveedorId);
+                    productoProveedor.setProducto(producto);
+                    productoProveedor.setProveedor(proveedor);
+                    productoProveedorRepository.save(productoProveedor);
+                }
+            }
+        }*/
     }
 }

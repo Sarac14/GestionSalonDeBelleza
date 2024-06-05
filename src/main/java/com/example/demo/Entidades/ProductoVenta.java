@@ -17,8 +17,8 @@ public class ProductoVenta extends Producto{
     @Column(name = "descuento")
     private float descuento;
 
-    public ProductoVenta(Long id, String marca, String nombre, String descripcion, int cantidadStock, float precioCompra, int cantidadMinima, Set<ProductoProveedor> productoProveedor, float precioVenta, float descuento) {
-        super(id, marca, nombre, descripcion, cantidadStock, precioCompra, cantidadMinima, productoProveedor);
+    public ProductoVenta(String marca, String nombre, String descripcion, int cantidadStock,int cantidadPedidoAutomatico, float precioCompra, int cantidadMinima, Set<ProductoProveedor> proveedores, String unidadMedida, int cantidadPorUsos, int cantidadDeUsos) {
+        super(marca, nombre, descripcion, cantidadStock, precioCompra, cantidadMinima, cantidadPedidoAutomatico, proveedores);
         this.precioVenta = precioVenta;
         this.descuento = descuento;
     }

@@ -25,4 +25,47 @@ public class ProductoOrdenCompra {
 
     @Column(name = "cantidad")
     private int cantidad;
+
+    public ProductoOrdenCompra(Long id, OrdenCompra ordenCompra, List<Producto> productos, int cantidad) {
+        this.id = id;
+        this.ordenCompra = ordenCompra;
+        this.productos = productos;
+        this.cantidad = cantidad;
+    }
+
+    public ProductoOrdenCompra() {
+
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public OrdenCompra getOrdenCompra() {
+        return ordenCompra;
+    }
+
+    public void setOrdenCompra(OrdenCompra ordenCompra) {
+        this.ordenCompra = ordenCompra;
+    }
+
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
 }

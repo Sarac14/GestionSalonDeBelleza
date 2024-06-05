@@ -1,0 +1,69 @@
+Registrar Usuario
+Url:http://localhost:8080/usuario/registrar
+Json:
+{
+    "username": "Usuario",
+    "password": "Contraseña",
+    "persona":{
+        "nombre":"Nombre",
+        "apellido":"Apellido",
+        "fechaNacimiento":"1990-01-01",
+        "correoElectronico":"correo@ejemplo.com",
+        "telefono":123456789
+    },
+    "roles":[
+        {
+            "descrption":"ROLE_ADMIN"
+        }
+    ]
+
+}
+
+Iniciar Sesion
+Url:http://localhost:8080/usuario/login
+{
+    "username":"Usuario",
+    "password":"Contraseña"
+}
+
+Crear OrdenCompra (Tengo que revisarla)
+Url:http://localhost:8080/ordenesCompra/crear
+Json:
+{
+    "proveedorId": 1,
+    "productosIds": [1, 2],
+    "cantidades": [5, 10],
+    "fechaEntrega": "2024-06-30"
+}
+
+Crear NuevoProducto
+Url:http://localhost:8080/productos/nuevoProducto
+Json:
+{
+  "marca": "Marca1",
+  "nombre": "Producto1",
+  "descripcion": "Descripcion Producto1",
+  "cantidadStock": 10,
+  "precioCompra": 599.99,
+  "cantidadMinima": 10,
+  "cantidadPedidoAutomatico": 25,
+  "proveedoresProducto": []
+}
+
+Crear NuevoProveedor
+Url:http://localhost:8080/proveedores/nuevoProveedor
+{
+  "nombreEmpresa": "Empresa1",
+  "nombreContacto": "Contacto1",
+  "telefono": "123456789",
+  "correoElectronico": "Contacto1@ejemplo.com",
+  "direccion": "Direccion1",
+  "productosProveedor": []
+}
+
+Crear NuevoProductoProveedor
+Url:http://localhost:8080/productoProveedor/crear
+{
+  "productoId": 1,
+  "proveedorId": 1
+}

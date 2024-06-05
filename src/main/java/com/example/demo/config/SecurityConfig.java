@@ -67,6 +67,8 @@ public class SecurityConfig {
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/productoProveedores/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/materiaPrimas/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/productoVenta/**"))
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/ordenesCompra/**"))
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/productoProveedor/**"))
 
 
                 )
@@ -83,6 +85,8 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/productoVenta/**")).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/usuario/registrar")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/usuario/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/ordenesCompra/crear")).hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/productoProveedor/crear")).hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

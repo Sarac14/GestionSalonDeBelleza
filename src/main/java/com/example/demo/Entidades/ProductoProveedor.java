@@ -30,6 +30,16 @@ public class ProductoProveedor {
     @JoinColumn(name = "proveedor_id")
     private Proveedor proveedor;
 
+    public ProductoProveedor(ProductoProveedorId id, Producto producto, Proveedor proveedor) {
+        this.id = id;
+        this.producto = producto;
+        this.proveedor = proveedor;
+    }
+
+    public ProductoProveedor() {
+
+    }
+
     public ProductoProveedorId getId() {
         return id;
     }

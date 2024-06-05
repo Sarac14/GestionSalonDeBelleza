@@ -20,8 +20,8 @@ public class MateriaPrima extends Producto{
     @Column(name = "cantidadDeUsos")
     private int cantidadDeUsos;
 
-    public MateriaPrima(Long id, String marca, String nombre, String descripcion, int cantidadStock, float precioCompra, int cantidadMinima, Set<ProductoProveedor> proveedores, String unidadMedida, int cantidadPorUsos, int cantidadDeUsos) {
-        super(id, marca, nombre, descripcion, cantidadStock, precioCompra, cantidadMinima, proveedores);
+    public MateriaPrima(String marca, String nombre, String descripcion, int cantidadStock,int cantidadPedidoAutomatico, float precioCompra, int cantidadMinima, Set<ProductoProveedor> proveedores, String unidadMedida, int cantidadPorUsos, int cantidadDeUsos) {
+        super(marca, nombre, descripcion, cantidadStock, precioCompra, cantidadMinima, cantidadPedidoAutomatico, proveedores);
         this.unidadMedida = unidadMedida;
         this.cantidadPorUsos = cantidadPorUsos;
         this.cantidadDeUsos = cantidadDeUsos;

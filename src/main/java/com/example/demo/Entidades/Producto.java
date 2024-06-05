@@ -33,18 +33,21 @@ public class Producto {
     @Column(name= "cantidadMinima")
     private int cantidadMinima;
 
-    @OneToMany(mappedBy = "producto")
+    @Column(name = "cantidad_pedido_automatico")
+    private int cantidadPedidoAutomatico;
+
+    @OneToMany(mappedBy = "producto",fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<ProductoProveedor> proveedoresProducto = new HashSet<>();
 
-    public Producto(Long id, String marca, String nombre, String descripcion, int cantidadStock, float precioCompra, int cantidadMinima, Set<ProductoProveedor> proveedoresProducto) {
-        this.id = id;
+    public Producto(String marca, String nombre, String descripcion, int cantidadStock, float precioCompra, int cantidadMinima, int cantidadPedidoAutomatico, Set<ProductoProveedor> proveedoresProducto) {
         Marca = marca;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.cantidadStock = cantidadStock;
         this.precioCompra = precioCompra;
         this.cantidadMinima = cantidadMinima;
+        this.cantidadPedidoAutomatico = cantidadPedidoAutomatico;
         this.proveedoresProducto = proveedoresProducto;
     }
 
@@ -114,5 +117,13 @@ public class Producto {
 
     public void setProveedoresProducto(Set<ProductoProveedor> proveedores) {
         this.proveedoresProducto = proveedores;
+    }
+
+    public int getCantidadPedidoAutomatico() {
+        return cantidadPedidoAutomatico;
+    }
+
+    public void setCantidadPedidoAutomatico(int cantidadPedidoAutomatico) {
+        this.cantidadPedidoAutomatico = cantidadPedidoAutomatico;
     }
 }

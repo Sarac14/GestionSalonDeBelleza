@@ -1,5 +1,6 @@
 package com.example.demo.Entidades;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -23,7 +24,6 @@ public class Cita implements Serializable{
 
     @Column(name = "fecha")
     private LocalDate fecha;
-
     @Column(name = "hora")
     private LocalTime hora;
 

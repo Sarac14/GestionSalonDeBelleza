@@ -3,7 +3,7 @@ package com.example.demo.Entidades;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -16,6 +16,19 @@ public class Empleado extends Persona implements Serializable {
     private String direccion;
     @Column(name = "categoria")
     private String categoria;
+
+    @Column(name = "horaEntrada")
+    private LocalTime horaEntrada;
+
+    @Column(name = "horaSalida")
+    private LocalTime horaSalida;
+
+    @Column(name = "horaComida")
+    private LocalTime horaComida;
+
+    @Column(name = "diaLibre")
+    private String diaLibre;
+
     @OneToOne
     @JoinColumn(name = "nomina_id")
     private Nomina nomina;
@@ -38,6 +51,15 @@ public class Empleado extends Persona implements Serializable {
     public Empleado(String nombre, String categoria) {
         this.nombre = nombre;
         this.categoria = categoria;
+    }
+
+    public Empleado(String nombre, String categoria, LocalTime horaEntrada, LocalTime horaSalida, LocalTime horaComida, String diaLibre) {
+        this.nombre = nombre;
+        this.categoria = categoria;
+        this.horaEntrada = horaEntrada;
+        this.horaSalida = horaSalida;
+        this.horaComida = horaComida;
+        this.diaLibre = diaLibre;
     }
 
     public String getGenero() {
@@ -70,6 +92,46 @@ public class Empleado extends Persona implements Serializable {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public LocalTime getHoraEntrada() {
+        return horaEntrada;
+    }
+
+    public void setHoraEntrada(LocalTime horaEntrada) {
+        this.horaEntrada = horaEntrada;
+    }
+
+    public LocalTime getHoraSalida() {
+        return horaSalida;
+    }
+
+    public void setHoraSalida(LocalTime horaSalida) {
+        this.horaSalida = horaSalida;
+    }
+
+    public LocalTime getHoraComida() {
+        return horaComida;
+    }
+
+    public void setHoraComida(LocalTime horaComida) {
+        this.horaComida = horaComida;
+    }
+
+    public String getDiaLibre() {
+        return diaLibre;
+    }
+
+    public void setDiaLibre(String diaLibre) {
+        this.diaLibre = diaLibre;
+    }
+
+    public List<Factura> getFacturas() {
+        return facturas;
+    }
+
+    public void setFacturas(List<Factura> facturas) {
+        this.facturas = facturas;
     }
 }
 

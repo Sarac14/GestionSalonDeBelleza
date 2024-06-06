@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.time.LocalTime;
+
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -45,15 +47,22 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         if (servicioRepository.count() == 0) {
-            servicioRepository.save(new Servicio("Servicio 1", 10, "Secado" ));
-            servicioRepository.save(new Servicio("Servicio 2", 20, "Lavado"));
-            servicioRepository.save(new Servicio("Servicio 3", 30, "Uñas"));
+            servicioRepository.save(new Servicio("Servicio 1", 10, "Secado",35 ));
+            servicioRepository.save(new Servicio("Servicio 2", 20, "Lavado", 10));
+            servicioRepository.save(new Servicio("Servicio 3", 30, "Uñas", 40));
+            servicioRepository.save(new Servicio("Servicio 4", 10, "Secado", 35));
+
         }
 
         if (empleadoRepository.count() == 0) {
 
-            empleadoRepository.save(new Empleado("Ana García", "Secado"));
-            empleadoRepository.save(new Empleado("Carlos Rodríguez", "Secado"));
+            LocalTime horaEntrada = LocalTime.of(8, 30);
+            LocalTime horaSalida = LocalTime.of(17, 30);
+            LocalTime horaComida = LocalTime.of(12, 30);
+
+
+            empleadoRepository.save(new Empleado("Ana García", "Secado", horaEntrada,horaSalida,horaComida,"monday"));
+            empleadoRepository.save(new Empleado("Carlos Rodríguez", "Secado", horaEntrada,horaSalida,horaComida,"monday"));
             empleadoRepository.save(new Empleado("María López", "Lavado"));
             empleadoRepository.save(new Empleado("Pedro Fernández", "Lavado"));
             empleadoRepository.save(new Empleado("Laura González", "Uñas"));

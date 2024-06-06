@@ -21,6 +21,9 @@ public class Servicio {
     @Column(name = "categoria")
     private String categoria;
 
+    @Column(name = "duracion")
+    private Integer duracion;
+
     public Servicio(Long id, String nombre, String descripcion, Float precioBase, String categoria) {
         this.id = id;
         this.nombre = nombre;
@@ -29,10 +32,11 @@ public class Servicio {
         this.categoria = categoria;
     }
 
-    public Servicio(String nombre, float precio, String categoria) {
+    public Servicio(String nombre, float precio, String categoria, Integer duracion) {
         this.nombre = nombre;
         this.precioBase = precio;
         this.categoria = categoria;
+        this.duracion = duracion;
     }
 
     public Servicio() {
@@ -78,5 +82,13 @@ public class Servicio {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public Integer getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(Integer duracion) {
+        this.duracion = duracion;
     }
 }

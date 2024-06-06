@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "servicioCita")
@@ -11,6 +12,12 @@ public class ServicioCita implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "horaInicio")
+    private LocalTime horaInicio;
+
+    @Column(name = "horaFin")
+    private LocalTime horaFin;
 
     @ManyToOne
     @JoinColumn(name = "idCita")
@@ -79,5 +86,28 @@ public class ServicioCita implements Serializable {
 
     public void setDetalle(Detalle detalle) {
         this.detalle = detalle;
+    }
+
+    public LocalTime getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(LocalTime horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public LocalTime getHoraFin() {
+        return horaFin;
+    }
+
+    public void setHoraFin(LocalTime horaFin) {
+        this.horaFin = horaFin;
+    }
+
+    public void calcularHoraServicio(LocalTime horaInicial) {
+        Servicio servicio = this.getServicio();
+        LocalTime horaFin = horaInicial.plusMinutes(servicio.getDuracion());
+        this.setHoraInicio(horaInicial);
+        this.setHoraFin(horaFin);
     }
 }

@@ -82,6 +82,7 @@ public class CitaService {
         newCita.setCliente(cliente);
 
         List<ServicioCita> serviciosCita = new ArrayList<>();
+        LocalTime currentHoraInicio = cita.getHora();
 
         for (ServicioCita servicioCita : cita.getServiciosCita()) {
             Servicio servicio = servicioRepository.findById(Math.toIntExact(servicioCita.getServicio().getId()))
@@ -89,9 +90,12 @@ public class CitaService {
             Empleado empleado = empleadoRepository.findById(Math.toIntExact(servicioCita.getEmpleado().getId()))
                     .orElseThrow(() -> new NoSuchElementException("Empleado no encontrado"));
 
-            // Verificar si el empleado está disponible en la fecha y hora solicitada
-            if (!estaEmpleadoDisponible(empleado, cita.getFecha(), cita.getHora())) {
-                throw new RuntimeException("El empleado con ID: " + empleado.getId() + " no está disponible en la fecha y hora solicitada.");
+            LocalTime horaInicio = currentHoraInicio;
+            LocalTime horaFin = horaInicio.plusMinutes(servicio.getDuracion());
+
+            // Verificar disponibilidad del empleado en el intervalo de tiempo del servicio
+            if (!estaEmpleadoDisponible(empleado, cita.getFecha(), horaInicio, horaFin)) {
+                throw new RuntimeException("El empleado con ID: " + empleado.getId() + " no está disponible de " + horaInicio + " a " + horaFin + " en la fecha solicitada.");
             }
 
             if (!servicio.getCategoria().equals(empleado.getCategoria())) {
@@ -102,19 +106,40 @@ public class CitaService {
             newServicioCita.setCita(newCita);
             newServicioCita.setServicio(servicio);
             newServicioCita.setEmpleado(empleado);
+            newServicioCita.setHoraInicio(horaInicio);
+            newServicioCita.setHoraFin(horaFin);
+
             serviciosCita.add(newServicioCita);
+
+            // Actualizar la hora de inicio para el siguiente servicio
+            currentHoraInicio = horaFin;
         }
 
         newCita.setServiciosCita(serviciosCita);
         return citaRepository.save(newCita);
     }
 
-    // Método para verificar si un empleado está disponible en una fecha y hora específicas
-    private boolean estaEmpleadoDisponible(Empleado empleado, LocalDate fecha, LocalTime hora) {
-        List<Cita> citas = citaRepository.findByEmpleadoAndFechaAndHora(empleado.getId(), fecha, hora);
+    private boolean estaEmpleadoDisponible(Empleado empleado, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin) {
+        // Verificar si el empleado tiene día libre en la fecha solicitada
+        if (empleado.getDiaLibre().equalsIgnoreCase(fecha.getDayOfWeek().name())) {
+            return false;
+        }
+
+        // Verificar si la hora solicitada coincide con la hora de comida
+        if ((horaInicio.isAfter(empleado.getHoraComida()) && horaInicio.isBefore(empleado.getHoraComida().plusHours(1))) ||
+                (horaFin.isAfter(empleado.getHoraComida()) && horaFin.isBefore(empleado.getHoraComida().plusHours(1)))) {
+            return false;
+        }
+
+        // Verificar si las horas solicitadas están fuera del horario laboral
+        if (horaInicio.isBefore(empleado.getHoraEntrada()) || horaFin.isAfter(empleado.getHoraSalida())) {
+            return false;
+        }
+
+        // Verificar si el empleado ya tiene una cita en el intervalo de tiempo solicitado
+        List<Cita> citas = citaRepository.findByEmpleadoAndFechaAndHoraBetween(empleado.getId(), fecha, horaInicio, horaFin);
         return citas.isEmpty();
     }
-
 
     public Cita actualizarDetallesDeCita(Long idCita, Cita citaActualizada) {
         Cita citaExistente = citaRepository.findById(Math.toIntExact(idCita))

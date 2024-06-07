@@ -15,7 +15,7 @@ public class Persona {
     private Long id;
 
     @Column(name = "cedula")
-    private int cedula;
+    private Long cedula;
 
     @Column(name = "nombre")
     public String nombre;
@@ -32,7 +32,7 @@ public class Persona {
     @Column(name = "telefono")
     private int telefono;
 
-    public Persona(int cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono) {
+    public Persona(Long cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -45,11 +45,11 @@ public class Persona {
 
     }
 
-    public int getCedula() {
+    public Long getCedula() {
         return cedula;
     }
 
-    public void setCedula(int cedula) {
+    public void setCedula(Long cedula) {
         this.cedula = cedula;
     }
 

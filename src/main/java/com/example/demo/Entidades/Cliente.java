@@ -18,12 +18,12 @@ public class Cliente extends Persona {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Factura> facturas;
 
-    public Cliente(int cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono, Long idClienteCita) {
+    public Cliente(Long cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono, Long idClienteCita) {
         super(cedula, nombre, apellido, fechaNacimiento, correoElectronico, telefono);
         this.idClienteCita = idClienteCita;
     }
 
-    public Cliente(int cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono) {
+    public Cliente(Long cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono) {
         super(cedula, nombre, apellido, fechaNacimiento, correoElectronico, telefono);
     }
 

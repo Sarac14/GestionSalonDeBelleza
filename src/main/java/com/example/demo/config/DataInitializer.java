@@ -2,6 +2,7 @@ package com.example.demo.config;
 
 import com.example.demo.Entidades.*;
 import com.example.demo.repositorios.*;
+import com.example.demo.servicios.UsuarioService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -19,13 +20,14 @@ public class DataInitializer implements CommandLineRunner {
     private final ServicioRepository servicioRepository;
     private static EmpleadoRepository empleadoRepository;
     private final RolRepository rolRepository;
+    private final UsuarioService usuarioService;
     private final UsuarioRepository usuarioRepository;
     private final ProductoRepository productoRepository;
     private final ProveedorRepository proveedorRepository;
     private final ProductoProveedorRepository productoProveedorRepository;
 
 
-    public DataInitializer(ClienteRepository clienteRepository, ServicioRepository servicioRepository, EmpleadoRepository empleadoRepository, CitaRepository citaRepository, RolRepository rolRepository, UsuarioRepository usuarioRepository, ProductoRepository productoRepository, ProveedorRepository proveedorRepository, ProductoProveedorRepository productoProveedorRepository) {
+    public DataInitializer(ClienteRepository clienteRepository, ServicioRepository servicioRepository, EmpleadoRepository empleadoRepository, CitaRepository citaRepository, RolRepository rolRepository, UsuarioRepository usuarioRepository, ProductoRepository productoRepository, ProveedorRepository proveedorRepository, ProductoProveedorRepository productoProveedorRepository, UsuarioService usuarioService) {
         this.clienteRepository = clienteRepository;
         this.servicioRepository = servicioRepository;
         this.empleadoRepository = empleadoRepository;
@@ -34,16 +36,17 @@ public class DataInitializer implements CommandLineRunner {
         this.productoRepository = productoRepository;
         this.proveedorRepository = proveedorRepository;
         this.productoProveedorRepository = productoProveedorRepository;
+        this.usuarioService = usuarioService;
 
     }
 
     @Override
     public void run(String... args) throws Exception {
         if (clienteRepository.count() == 0) {
-            clienteRepository.save(new Cliente(402626891,"Cliente 1","Cliente","2002-12-14","sara@gmail.com",123));
-            clienteRepository.save(new Cliente(402626892,"Cliente 2","Cliente","2002-09-14","sara@gmail.com",123));
-            clienteRepository.save(new Cliente(402626893,"Cliente 3","Cliente","2002-09-14","sara@gmail.com",123));
-            clienteRepository.save(new Cliente(402626894,"Cliente 4","Cliente","2002-09-14","sara@gmail.com",123));
+            clienteRepository.save(new Cliente(402626891L,"Cliente 1","Cliente","2002-12-14","sara@gmail.com",123));
+            clienteRepository.save(new Cliente(402626892L,"Cliente 2","Cliente","2002-09-14","sara@gmail.com",123));
+            clienteRepository.save(new Cliente(402626893L,"Cliente 3","Cliente","2002-09-14","sara@gmail.com",123));
+            clienteRepository.save(new Cliente(402626894L,"Cliente 4","Cliente","2002-09-14","sara@gmail.com",123));
         }
 
         if (servicioRepository.count() == 0) {
@@ -72,6 +75,14 @@ public class DataInitializer implements CommandLineRunner {
             rolRepository.save(new Rol("ROLE_ADMIN"));
             rolRepository.save(new Rol("ROLE_EMPLEADO"));
             rolRepository.save(new Rol("ROLE_CLIENTE"));
+        }
+
+        if (usuarioRepository.count() == 0) {
+            Persona persona = new Persona(40219065769L,"Nombre", "Apellido", "1990-01-01", "correo@ejemplo.com", 1234567890);
+            List<Rol> roles = new ArrayList<>();
+            roles.add(rolRepository.findByDescripcion("ROLE_ADMIN"));
+            Usuario usuario = new Usuario("username","password",persona,roles);
+            usuarioService.registrarNuevoUsuario(usuario);
         }
 
         /*List<Proveedor> proveedores = new ArrayList<>();

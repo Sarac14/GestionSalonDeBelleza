@@ -1,6 +1,7 @@
 package com.example.demo.servicios;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,6 +19,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import static javax.crypto.Cipher.SECRET_KEY;
 
 
 @Component
@@ -58,21 +61,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             new UsernamePasswordAuthenticationToken(username, null, grantedAuthorities);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                    System.out.println("111111111111111111111111111111111111111111111");
+                    System.out.println("Access granted for URI: " + requestURI);
                     filterChain.doFilter(request, response);
                 } else {
-                    System.out.println("22222222222222222222222222222222222222222222222");
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                     System.out.println("Access denied for URI: " + requestURI);
                 }
             } catch (Exception e) {
-                System.out.println("333333333333333333333333333333333333333333333333");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 System.out.println("Invalid token for URI: " + requestURI);
                 e.printStackTrace();
             }
         } else {
-            System.out.println("444444444444444444444444444444444444444444444444444444");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             System.out.println("Token missing or invalid format for URI: " + requestURI);
         }
@@ -82,8 +82,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (requestURI.startsWith("/admin/")) {
             return authorities.contains("ROLE_ADMIN");
         }
-        if (requestURI.startsWith("/cliente/")) {
-            return authorities.contains("ROLE_CLIENTE");
+        if (requestURI.startsWith("/clientes/")) {
+            return authorities.contains("ROLE_CLIENTE") || authorities.contains("ROLE_ADMIN");
         }
         if (requestURI.startsWith("/cita/")) {
             return authorities.contains("ROLE_CLIENTE") || authorities.contains("ROLE_ADMIN");
@@ -108,6 +108,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         if (requestURI.startsWith("/productoProveedor")) {
             return authorities.contains("ROLE_ADMIN");
+        }
+        if (requestURI.startsWith("/servicios")) {
+            return !authorities.isEmpty();
+        }
+        if (requestURI.startsWith("/empleados")) {
+            return !authorities.isEmpty();
+        }
+        if (requestURI.startsWith("/usuario")) {
+            return !authorities.isEmpty();
         }
         return false;
     }

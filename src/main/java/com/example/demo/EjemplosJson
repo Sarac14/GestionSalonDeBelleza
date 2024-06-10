@@ -13,10 +13,9 @@ Json:
     },
     "roles":[
         {
-            "descrption":"ROLE_ADMIN"
+            "descripcion":"ROLE_ADMIN"
         }
     ]
-
 }
 
 Iniciar Sesion

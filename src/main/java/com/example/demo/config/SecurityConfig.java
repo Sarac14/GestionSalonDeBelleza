@@ -69,13 +69,16 @@ public class SecurityConfig {
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/productoVenta/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/ordenesCompra/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/productoProveedor/**"))
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/servicios/**"))
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/empleados/**"))
 
 
                 )
                 .authorizeHttpRequests(authorization -> authorization
                         .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/empleado/**")).hasRole("EMPLEADO")
-                        .requestMatchers(new AntPathRequestMatcher("/cliente/**")).hasRole("CLIENTE")
+                        .requestMatchers(new AntPathRequestMatcher("/clientes/**")).hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENTE")
+
                         .requestMatchers(new AntPathRequestMatcher("/cita/**")).hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENTE")
                         .requestMatchers(new AntPathRequestMatcher("/productos/**")).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/proveedores/**")).hasAuthority("ROLE_ADMIN")
@@ -85,8 +88,11 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/productoVenta/**")).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/usuario/registrar")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/usuario/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/usuario/")).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/ordenesCompra/crear")).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/productoProveedor/crear")).hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/servicios/")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/empleados/")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

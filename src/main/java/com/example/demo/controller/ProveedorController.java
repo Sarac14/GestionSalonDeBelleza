@@ -13,56 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
-/*
-@RestController
-@RequestMapping("/proveedores")
-public class ProveedorController {
-    @Autowired
-    private ProveedorService proveedorService;
-
-    @GetMapping("/")
-    public List<Proveedor> getAllProveedores() {
-        return proveedorService.getAllProveedores();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Proveedor> getProveedorById(@PathVariable Long id) {
-        Optional<Proveedor> proveedor = proveedorService.getProveedorById(id);
-        return proveedor.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping("/nuevoProveedor")
-    public Proveedor createProveedor(@RequestBody Proveedor proveedor) {
-        return proveedorService.saveProveedor(proveedor);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Proveedor> updateProveedor(@PathVariable Long id, @RequestBody Proveedor proveedorDetails) {
-        Optional<Proveedor> optionalProveedor = proveedorService.getProveedorById(id);
-        if (optionalProveedor.isPresent()) {
-            Proveedor proveedor = optionalProveedor.get();
-            proveedor.setNombreEmpresa(proveedorDetails.getNombreEmpresa());
-            proveedor.setNombreContacto(proveedorDetails.getNombreContacto());
-            proveedor.setTelefono(proveedorDetails.getTelefono());
-            proveedor.setCorreoElectronico(proveedorDetails.getCorreoElectronico());
-            proveedor.setDireccion(proveedorDetails.getDireccion());
-            return ResponseEntity.ok(proveedorService.saveProveedor(proveedor));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProveedor(@PathVariable Long id) {
-        if (proveedorService.getProveedorById(id).isPresent()) {
-            proveedorService.deleteProveedor(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-}*/
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/proveedores")
@@ -129,4 +80,18 @@ public class ProveedorController {
 
         return ResponseEntity.ok(proveedor);
     }
+
+    @GetMapping("/{proveedorId}/productos")
+    public ResponseEntity<List<Producto>> getProductosByProveedor(@PathVariable Long proveedorId) {
+        Optional<Proveedor> proveedor = proveedorService.getProveedorById(proveedorId);
+        if (!proveedor.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<ProductoProveedor> productoProveedores = proveedorProductoRepository.findByProveedorId(proveedorId);
+        List<Producto> productos = productoProveedores.stream()
+                .map(ProductoProveedor::getProducto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(productos);
+    }
+
 }

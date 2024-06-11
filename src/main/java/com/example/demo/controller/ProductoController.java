@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/productos")
@@ -88,5 +89,18 @@ public class ProductoController {
         }
 
         return ResponseEntity.ok(producto);
+    }
+
+    @GetMapping("/{productoId}/proveedores")
+    public ResponseEntity<List<Proveedor>> getProveedoresByProducto(@PathVariable Long productoId) {
+        Optional<Producto> producto = productoService.getProductoById(productoId);
+        if (!producto.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<ProductoProveedor> productoProveedores = proveedorProductoRepository.findByProductoId(productoId);
+        List<Proveedor> proveedores = productoProveedores.stream()
+                .map(ProductoProveedor::getProveedor)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(proveedores);
     }
 }

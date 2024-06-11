@@ -71,7 +71,7 @@ public class JWTService {
         return claimsResolver.apply(claims);
     }
 
-    Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) {
         String base64EncodedSecretKey = Base64.getEncoder().encodeToString(SECRET.getBytes());
         return Jwts.parserBuilder()
                 .setSigningKey(base64EncodedSecretKey)

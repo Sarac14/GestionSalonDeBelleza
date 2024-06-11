@@ -26,6 +26,9 @@ public class UsuarioService {
     @Autowired
     PersonaRepository personaRepository;
 
+    @Autowired
+    private ClienteService clienteService;
+
     //@Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -43,6 +46,7 @@ public class UsuarioService {
 
     public void registrarNuevoUsuario(Usuario usuario) {
         Persona persona = new Persona();
+        persona.setCedula(usuario.getPersona().getCedula());
         persona.setNombre(usuario.getPersona().getNombre());
         persona.setApellido(usuario.getPersona().getApellido());
         persona.setFechaNacimiento(usuario.getPersona().getFechaNacimiento());
@@ -54,9 +58,14 @@ public class UsuarioService {
         usuario.setPersona(persona);
 
         List<Rol> roles = new ArrayList<>();
+        boolean esCliente = false;
         if (usuario.getRoles() != null && !usuario.getRoles().isEmpty()) {
             for (Rol rol : usuario.getRoles()) {
-                roles.add(rolRepository.findByDescripcion(rol.getDescripcion()));
+                Rol encontrado = rolRepository.findByDescripcion(rol.getDescripcion());
+                roles.add(encontrado);
+                if ("ROLE_CLIENTE".equals(encontrado.getDescripcion())) {
+                    esCliente = true;
+                }
             }
         }
         usuario.setRoles(roles);
@@ -64,7 +73,11 @@ public class UsuarioService {
         String encodedPassword = passwordEncoder.encode(usuario.getPassword());
         usuario.setPassword(encodedPassword);
 
+        usuarioRepository.save(usuario);
 
+        if (esCliente) {
+            clienteService.crearCliente(persona);
+        }
         usuarioRepository.save(usuario);
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
         System.out.println("Roles del usuario: " + usuario.getRoles());

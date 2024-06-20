@@ -1,6 +1,7 @@
 package com.example.demo.Entidades;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "cita")
-public class Cita implements Serializable{
+public class Cita implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,12 +25,17 @@ public class Cita implements Serializable{
 
     @Column(name = "fecha")
     private LocalDate fecha;
+
     @Column(name = "hora")
     private LocalTime hora;
 
-    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ServicioCita> serviciosCita = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Detalle> detalles = new ArrayList<>();
 
     public Cita(Long id, Cliente cliente, LocalDate fecha, LocalTime  hora) {
         this.id = id;

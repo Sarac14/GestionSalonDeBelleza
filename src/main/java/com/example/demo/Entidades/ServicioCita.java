@@ -1,6 +1,7 @@
 package com.example.demo.Entidades;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -19,11 +20,6 @@ public class ServicioCita implements Serializable {
     @Column(name = "horaFin")
     private LocalTime horaFin;
 
-    @ManyToOne
-    @JoinColumn(name = "idCita")
-    @JsonBackReference
-
-    private Cita cita;
 
     @ManyToOne
     @JoinColumn(name = "idServicio")
@@ -33,6 +29,12 @@ public class ServicioCita implements Serializable {
     @JoinColumn(name = "idEmpleado")
     private Empleado empleado;
 
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "idCita")
+    private Cita cita;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "idDetalle")
     private Detalle detalle;

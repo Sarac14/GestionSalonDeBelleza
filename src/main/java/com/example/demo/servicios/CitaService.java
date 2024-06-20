@@ -31,42 +31,8 @@ public class CitaService {
     @Autowired
     private DetalleRepository detalleRepository;
 
-/*    public Cita crearCitaConValidacion(Cita cita) {
-        System.out.println("Creando nueva cita...");
-        System.out.println("Cita recibida: " + cita);
-
-        Cliente cliente = clienteRepository.findById(Math.toIntExact(cita.getCliente().getId()))
-                .orElseThrow(() -> new NoSuchElementException("Cliente no encontrado"));
-
-        // Crear la cita
-        Cita newCita = new Cita();
-        newCita.setFecha(cita.getFecha());
-        newCita.setHora(cita.getHora());
-        newCita.setCliente(cliente);
-
-        List<ServicioCita> serviciosCita = new ArrayList<>();
-
-        for (ServicioCita servicioCita : cita.getServiciosCita()) {
-            Servicio servicio = servicioRepository.findById(Math.toIntExact(servicioCita.getServicio().getId()))
-                    .orElseThrow(() -> new NoSuchElementException("Servicio no encontrado"));
-            Empleado empleado = empleadoRepository.findById(Math.toIntExact(servicioCita.getEmpleado().getId()))
-                    .orElseThrow(() -> new NoSuchElementException("Empleado no encontrado"));
-
-            if (!servicio.getCategoria().equals(empleado.getCategoria())) {
-                throw new RuntimeException("La categoría del servicio y del empleado no coinciden para el servicio con ID: " + servicio.getId());
-            }
-
-            ServicioCita newServicioCita = new ServicioCita();
-            newServicioCita.setCita(newCita);
-            newServicioCita.setServicio(servicio);
-            newServicioCita.setEmpleado(empleado);
-            serviciosCita.add(newServicioCita);
-        }
-
-        newCita.setServiciosCita(serviciosCita);
-        return citaRepository.save(newCita);
-    }*/
-
+    @Autowired
+    private ServicioCitaRepository servicioCitaRepository;
 
     public Cita crearCitaConValidacion(Cita cita) {
         System.out.println("Creando nueva cita...");
@@ -116,8 +82,26 @@ public class CitaService {
         }
 
         newCita.setServiciosCita(serviciosCita);
-        return citaRepository.save(newCita);
+
+
+        Cita citaGuardada = citaRepository.save(cita);
+
+        for (ServicioCita servicioCita : citaGuardada.getServiciosCita()) {
+            Detalle detalle = new Detalle();
+            detalle.setCita(citaGuardada); // Asocia el detalle a la cita
+            detalleRepository.save(detalle); // Guarda el detalle en la base de datos
+
+            servicioCita.setDetalle(detalle); // Asocia el detalle al servicio de la cita
+            servicioCita.setCita(citaGuardada); // Asocia el servicio a la cita
+            detalle.getServiciosCita().add(servicioCita); // Añade el servicio de la cita al detalle
+
+            servicioCitaRepository.save(servicioCita); // Guarda el servicio de la cita en la base de datos
+        }
+
+
+        return citaRepository.save(citaGuardada);
     }
+
 
     private boolean estaEmpleadoDisponible(Empleado empleado, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin) {
         // Verificar si el empleado tiene día libre en la fecha solicitada

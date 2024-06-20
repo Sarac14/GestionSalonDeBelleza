@@ -1,8 +1,10 @@
 package com.example.demo.Entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,14 +14,16 @@ public class Detalle implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "detalle", cascade = CascadeType.ALL, orphanRemoval = true)
     private VentaProducto ventaProducto;
 
-    @OneToMany(mappedBy = "detalle")
-    private List<ServicioCita> serviciosCita;
+    @JsonIgnore
+    @OneToMany(mappedBy = "detalle", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ServicioCita> serviciosCita = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "idCita")
+    @JoinColumn(name = "id_cita")
     private Cita cita;
 
     public Detalle() {

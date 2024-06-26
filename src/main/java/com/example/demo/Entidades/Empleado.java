@@ -1,5 +1,6 @@
 package com.example.demo.Entidades;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -34,6 +35,7 @@ public class Empleado extends Persona implements Serializable {
     private Nomina nomina;
 
     @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("empleado-facturas")
     private List<Factura> facturas;
 
     public Empleado(Long cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono, String genero, String direccion, Nomina nomina, String Categoria) {

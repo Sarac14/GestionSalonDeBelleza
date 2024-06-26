@@ -1,9 +1,9 @@
 package com.example.demo.Entidades;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +16,10 @@ public class ProductoVenta extends Producto{
 
     @Column(name = "descuento")
     private float descuento;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "productoVenta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VentaProducto> ventasProducto = new ArrayList<>();
 
     public ProductoVenta(String marca, String nombre, String descripcion, int cantidadStock,int cantidadPedidoAutomatico, float precioCompra, int cantidadMinima, Set<ProductoProveedor> proveedores, String unidadMedida, int cantidadPorUsos, int cantidadDeUsos) {
         super(marca, nombre, descripcion, cantidadStock, precioCompra, cantidadMinima, cantidadPedidoAutomatico, proveedores);
@@ -41,5 +45,13 @@ public class ProductoVenta extends Producto{
 
     public void setDescuento(float descuento) {
         this.descuento = descuento;
+    }
+
+    public List<VentaProducto> getVentasProducto() {
+        return ventasProducto;
+    }
+
+    public void setVentasProducto(List<VentaProducto> ventasProducto) {
+        this.ventasProducto = ventasProducto;
     }
 }

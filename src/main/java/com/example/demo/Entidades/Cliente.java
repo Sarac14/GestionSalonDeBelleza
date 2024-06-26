@@ -1,6 +1,7 @@
 package com.example.demo.Entidades;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -16,6 +17,7 @@ public class Cliente extends Persona {
     private Long idClienteCita;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("cliente-facturas")
     private List<Factura> facturas;
 
     public Cliente(Long cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono, Long idClienteCita) {

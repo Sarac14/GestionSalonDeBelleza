@@ -1,5 +1,6 @@
 package com.example.demo.Entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,10 +11,61 @@ public class VentaProducto {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "idDetalle")
+    @JoinColumn(name = "detalle_id")
+    @JsonBackReference("venta-producto-detalle")
     private Detalle detalle;
 
     @OneToOne
     @JoinColumn(name = "idEmpleado")
     private Empleado empleado;
+
+    @ManyToOne
+    @JoinColumn(name = "idProductoVenta")
+    private ProductoVenta productoVenta;
+
+    @Column(name = "cantidad")
+    private int cantidad;
+
+    public VentaProducto() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Detalle getDetalle() {
+        return detalle;
+    }
+
+    public void setDetalle(Detalle detalle) {
+        this.detalle = detalle;
+    }
+
+    public Empleado getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+    }
+
+    public ProductoVenta getProductoVenta() {
+        return productoVenta;
+    }
+
+    public void setProductoVenta(ProductoVenta productoVenta) {
+        this.productoVenta = productoVenta;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
 }

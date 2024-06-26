@@ -23,4 +23,11 @@ public class ClienteService {
         );
         clienteRepository.save(cliente);
     }
+
+    public Cliente findById(Long clienteId) throws ClassNotFoundException {
+        return clienteRepository.findById(Math.toIntExact(clienteId))
+                .orElseThrow(() -> new ClassNotFoundException("Cliente no encontrado con ID: " + clienteId));
+    }
+
+
 }

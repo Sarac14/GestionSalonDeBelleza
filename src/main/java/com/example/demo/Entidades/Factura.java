@@ -1,5 +1,7 @@
 package com.example.demo.Entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.Date;
 
@@ -12,14 +14,17 @@ public class Factura {
 
     @ManyToOne
     @JoinColumn(name = "idCliente")
+    @JsonBackReference("cliente-facturas")
     private Cliente cliente;
 
     @ManyToOne
     @JoinColumn(name = "idEmpleado")
+    @JsonBackReference("empleado-facturas")
     private Empleado empleado;
 
     @OneToOne
     @JoinColumn(name = "detalle_id", unique = true)
+    @JsonManagedReference("detalle-factura")
     private Detalle detalle;
 
     @JoinColumn(name = "fecha")

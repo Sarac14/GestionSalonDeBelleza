@@ -29,12 +29,15 @@ public class Cita implements Serializable {
     @Column(name = "hora")
     private LocalTime hora;
 
+    @Column(name = "vigente")
+    private boolean vigente = true;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ServicioCita> serviciosCita = new ArrayList<>();
-
     @JsonIgnore
     @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("cita-detalles")
     private List<Detalle> detalles = new ArrayList<>();
 
     public Cita(Long id, Cliente cliente, LocalDate fecha, LocalTime  hora) {
@@ -43,6 +46,8 @@ public class Cita implements Serializable {
         this.fecha = fecha;
         this.hora = hora;
     }
+
+
 
     public Cita() {
 
@@ -86,5 +91,13 @@ public class Cita implements Serializable {
 
     public void setServiciosCita(List<ServicioCita> detallesCita) {
         this.serviciosCita = detallesCita;
+    }
+
+    public boolean isVigente() {
+        return vigente;
+    }
+
+    public void setVigente(boolean vigente) {
+        this.vigente = vigente;
     }
 }

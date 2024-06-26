@@ -88,6 +88,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (requestURI.startsWith("/cita/")) {
             return authorities.contains("ROLE_CLIENTE") || authorities.contains("ROLE_ADMIN");
         }
+        if (requestURI.startsWith("/factura/")) {
+            return authorities.contains("ROLE_CLIENTE") || authorities.contains("ROLE_ADMIN");
+        }
         if (requestURI.startsWith("/productos")) {
             return authorities.contains("ROLE_ADMIN");
         }

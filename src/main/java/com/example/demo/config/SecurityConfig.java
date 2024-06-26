@@ -61,6 +61,7 @@ public class SecurityConfig {
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/usuario/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/cita/**"))
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/factura/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/cita/nuevaCita"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/productos/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/proveedores/**"))
@@ -80,6 +81,8 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/clientes/**")).hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENTE")
 
                         .requestMatchers(new AntPathRequestMatcher("/cita/**")).hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENTE")
+                        .requestMatchers(new AntPathRequestMatcher("/factura/**")).hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENTE")
+
                         .requestMatchers(new AntPathRequestMatcher("/productos/**")).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/proveedores/**")).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/productoProveedores/**")).hasAuthority("ROLE_ADMIN")

@@ -46,6 +46,7 @@ public class CitaService {
         newCita.setFecha(cita.getFecha());
         newCita.setHora(cita.getHora());
         newCita.setCliente(cliente);
+        newCita.setVigente(true);
 
         List<ServicioCita> serviciosCita = new ArrayList<>();
         LocalTime currentHoraInicio = cita.getHora();
@@ -154,6 +155,11 @@ public class CitaService {
             }
         }
         return Duration.ZERO;
+    }
+
+    public Cita findById(Long citaId) throws ClassNotFoundException{
+        return citaRepository.findById(Math.toIntExact(citaId))
+                .orElseThrow(() -> new ClassNotFoundException("Cliente no encontrado con ID: " + citaId));
     }
 
     public TiempoEsperaResponse obtenerTiempoEsperaFormateado(Long id) {

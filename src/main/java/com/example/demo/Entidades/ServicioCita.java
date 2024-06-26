@@ -34,9 +34,9 @@ public class ServicioCita implements Serializable {
     @JoinColumn(name = "idCita")
     private Cita cita;
 
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "idDetalle")
+    @JoinColumn(name = "detalle_id")
+    @JsonBackReference("servicio-cita-detalle")
     private Detalle detalle;
 
     public ServicioCita(Long id, Cita cita, Servicio servicio, Empleado empleado) {

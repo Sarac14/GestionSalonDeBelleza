@@ -3,6 +3,8 @@ package com.example.demo.Entidades;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "ventaProducto")
 public class VentaProducto {
@@ -68,4 +70,10 @@ public class VentaProducto {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+
+    public double calcularComision() {
+        double comisionRate = 0.05; // 5% de comisión por venta de producto
+        return productoVenta.getPrecioVenta() * comisionRate;
+    }
+
 }

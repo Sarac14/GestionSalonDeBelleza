@@ -5,6 +5,7 @@ import com.example.demo.repositorios.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,6 +34,9 @@ public class CitaService {
 
     @Autowired
     private ServicioCitaRepository servicioCitaRepository;
+
+    @Autowired
+    private NominaRepository nominaRepository;
 
     public Cita crearCitaConValidacion(Cita cita) {
         System.out.println("Creando nueva cita...");
@@ -96,6 +100,21 @@ public class CitaService {
             servicioCita.setCita(citaGuardada); // Asocia el servicio a la cita
             detalle.getServiciosCita().add(servicioCita); // Añade el servicio de la cita al detalle
 
+
+            //NUEVOOOOOOOOOOOOOOOOOOO
+            // Acumular comisiones por ventas de productos
+            VentaProducto ventaProducto = detalle.getVentaProducto();
+            if (ventaProducto != null) {
+                double comision = ventaProducto.calcularComision();
+                actualizarNominaConComision(ventaProducto.getEmpleado(), comision);
+            }
+
+            // Acumular comisiones por servicios de cita
+            for (ServicioCita servicioCita1 : serviciosCita) {
+                double comision = servicioCita1.calcularComision();
+                actualizarNominaConComision(servicioCita.getEmpleado(), comision);
+            }
+            //NUEVOOOOOOOOOOOOOOOOOOOOOO
             servicioCitaRepository.save(servicioCita); // Guarda el servicio de la cita en la base de datos
         }
 
@@ -157,10 +176,30 @@ public class CitaService {
         return Duration.ZERO;
     }
 
+    public void actualizarNominaConComision(Empleado empleado, double comision) {
+        Nomina nomina = nominaRepository.findByEmpleadoId(empleado.getId());
+        if (nomina == null) {
+            nomina = new Nomina();
+            nomina.setEmpleado(empleado);
+            nomina.setSalario(new BigDecimal("15000.00"));
+            nomina.setComision(new BigDecimal("0.00"));
+            nomina.setSalarioTotal(new BigDecimal("0.00"));
+            nomina.setFecha(LocalDate.now());
+        }
+
+        BigDecimal nuevaComision = nomina.getComision().add(BigDecimal.valueOf(comision));
+        nomina.setComision(nuevaComision);
+        nomina.setSalarioTotal(nomina.getSalario().add(nuevaComision));
+
+        nominaRepository.save(nomina);
+    }
+
+
     public Cita findById(Long citaId) throws ClassNotFoundException{
         return citaRepository.findById(Math.toIntExact(citaId))
                 .orElseThrow(() -> new ClassNotFoundException("Cliente no encontrado con ID: " + citaId));
     }
+
 
     public TiempoEsperaResponse obtenerTiempoEsperaFormateado(Long id) {
         Duration duration = calcularTiempoEspera(id);

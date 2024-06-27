@@ -112,4 +112,9 @@ public class ServicioCita implements Serializable {
         this.setHoraInicio(horaInicial);
         this.setHoraFin(horaFin);
     }
+
+    public double calcularComision() {
+        double comisionRate = 0.10; // 10% de comisión por servicio
+        return servicio.getPrecioBase() * comisionRate;
+    }
 }

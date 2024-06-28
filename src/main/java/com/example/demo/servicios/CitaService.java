@@ -88,8 +88,7 @@ public class CitaService {
 
         newCita.setServiciosCita(serviciosCita);
 
-
-        Cita citaGuardada = citaRepository.save(cita);
+        Cita citaGuardada = citaRepository.save(newCita);
 
         for (ServicioCita servicioCita : citaGuardada.getServiciosCita()) {
             Detalle detalle = new Detalle();
@@ -100,8 +99,6 @@ public class CitaService {
             servicioCita.setCita(citaGuardada); // Asocia el servicio a la cita
             detalle.getServiciosCita().add(servicioCita); // Añade el servicio de la cita al detalle
 
-
-            //NUEVOOOOOOOOOOOOOOOOOOO
             // Acumular comisiones por ventas de productos
             VentaProducto ventaProducto = detalle.getVentaProducto();
             if (ventaProducto != null) {
@@ -110,18 +107,14 @@ public class CitaService {
             }
 
             // Acumular comisiones por servicios de cita
-            for (ServicioCita servicioCita1 : serviciosCita) {
-                double comision = servicioCita1.calcularComision();
-                actualizarNominaConComision(servicioCita.getEmpleado(), comision);
-            }
-            //NUEVOOOOOOOOOOOOOOOOOOOOOO
+            double comision = servicioCita.calcularComision();
+            actualizarNominaConComision(servicioCita.getEmpleado(), comision);
+
             servicioCitaRepository.save(servicioCita); // Guarda el servicio de la cita en la base de datos
         }
 
-
         return citaRepository.save(citaGuardada);
     }
-
 
     private boolean estaEmpleadoDisponible(Empleado empleado, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin) {
         // Verificar si el empleado tiene día libre en la fecha solicitada
@@ -157,7 +150,7 @@ public class CitaService {
         List<ServicioCita> serviciosCitaExistente = citaExistente.getServiciosCita();
         serviciosCitaExistente.clear();
         serviciosCitaExistente.addAll(citaActualizada.getServiciosCita());
-        serviciosCitaExistente.forEach(detalle -> detalle.setCita(citaExistente));
+        serviciosCitaExistente.forEach(servicioCita -> servicioCita.setCita(citaExistente));
 
         // Guardar la cita actualizada en la base de datos
         return citaRepository.save(citaExistente);
@@ -194,12 +187,10 @@ public class CitaService {
         nominaRepository.save(nomina);
     }
 
-
-    public Cita findById(Long citaId) throws ClassNotFoundException{
+    public Cita findById(Long citaId) throws ClassNotFoundException {
         return citaRepository.findById(Math.toIntExact(citaId))
                 .orElseThrow(() -> new ClassNotFoundException("Cliente no encontrado con ID: " + citaId));
     }
-
 
     public TiempoEsperaResponse obtenerTiempoEsperaFormateado(Long id) {
         Duration duration = calcularTiempoEspera(id);
@@ -207,6 +198,10 @@ public class CitaService {
         long minutes = duration.toMinutes() % 60;
         long seconds = duration.getSeconds() % 60;
         return new TiempoEsperaResponse(hours, minutes, seconds);
+    }
+
+    public List<Cita> getCitasByClienteId(Long clienteId) {
+        return citaRepository.findByClienteId(clienteId);
     }
 
     public static class TiempoEsperaResponse {
@@ -244,7 +239,5 @@ public class CitaService {
         public void setSeconds(long seconds) {
             this.seconds = seconds;
         }
-
-
     }
 }

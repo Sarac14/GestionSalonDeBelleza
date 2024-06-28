@@ -16,4 +16,5 @@ public interface CitaRepository extends JpaRepository<Cita, Integer> {
    @Query("SELECT c FROM Cita c JOIN c.serviciosCita sc WHERE sc.empleado.id = :empleadoId AND c.fecha = :fecha AND sc.horaInicio = :horaIni AND sc.horaFin = :horaFin")
     List<Cita> findByEmpleadoAndFechaAndHoraBetween(@Param("empleadoId") Long empleadoId, @Param("fecha") LocalDate fecha, @Param("horaIni") LocalTime horaInicio, @Param("horaFin") LocalTime horaFin);
 
+    List<Cita> findByClienteId(Long clienteId);
 }

@@ -64,6 +64,14 @@ public class CitaController {
         return ResponseEntity.ok(tiempoEspera);
     }
 
+    @GetMapping("/cliente/{clienteId}")
+    public ResponseEntity<List<Cita>> getCitasByClienteId(@PathVariable Long clienteId) {
+        List<Cita> citas = citaService.getCitasByClienteId(clienteId);
+        if (citas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(citas);
+    }
 
 
 

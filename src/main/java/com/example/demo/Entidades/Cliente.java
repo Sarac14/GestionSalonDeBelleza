@@ -20,12 +20,12 @@ public class Cliente extends Persona {
     @JsonManagedReference("cliente-facturas")
     private List<Factura> facturas;
 
-    public Cliente(Long cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono, Long idClienteCita) {
+    public Cliente(Long cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, Long telefono, Long idClienteCita) {
         super(cedula, nombre, apellido, fechaNacimiento, correoElectronico, telefono);
         this.idClienteCita = idClienteCita;
     }
 
-    public Cliente(Long cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono) {
+    public Cliente(Long cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, Long telefono) {
         super(cedula, nombre, apellido, fechaNacimiento, correoElectronico, telefono);
     }
 

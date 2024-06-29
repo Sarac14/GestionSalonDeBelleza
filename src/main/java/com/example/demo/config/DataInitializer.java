@@ -43,10 +43,10 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (clienteRepository.count() == 0) {
-            clienteRepository.save(new Cliente(402626891L,"Cliente 1","Cliente","2002-12-14","sara@gmail.com",123));
-            clienteRepository.save(new Cliente(402626892L,"Cliente 2","Cliente","2002-09-14","sara@gmail.com",123));
-            clienteRepository.save(new Cliente(402626893L,"Cliente 3","Cliente","2002-09-14","sara@gmail.com",123));
-            clienteRepository.save(new Cliente(402626894L,"Cliente 4","Cliente","2002-09-14","sara@gmail.com",123));
+            clienteRepository.save(new Cliente(402626891L,"Cliente 1","Cliente","2002-12-14","sara@gmail.com", 123L));
+            clienteRepository.save(new Cliente(402626892L,"Cliente 2","Cliente","2002-09-14","sara@gmail.com", 123L));
+            clienteRepository.save(new Cliente(402626893L,"Cliente 3","Cliente","2002-09-14","sara@gmail.com", 123L));
+            clienteRepository.save(new Cliente(402626894L,"Cliente 4","Cliente","2002-09-14","sara@gmail.com", 123L));
         }
 
         if (servicioRepository.count() == 0) {
@@ -78,7 +78,7 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         if (usuarioRepository.count() == 0) {
-            Persona persona = new Persona(40219065769L,"Nombre", "Apellido", "1990-01-01", "correo@ejemplo.com", 1234567890);
+            Persona persona = new Persona(40219065769L,"Nombre", "Apellido", "1990-01-01", "correo@ejemplo.com", 1234567890L);
             List<Rol> roles = new ArrayList<>();
             roles.add(rolRepository.findByDescripcion("ROLE_ADMIN"));
             Usuario usuario = new Usuario("username","password",persona,roles);

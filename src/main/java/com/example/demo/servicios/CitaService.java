@@ -200,8 +200,8 @@ public class CitaService {
         return new TiempoEsperaResponse(hours, minutes, seconds);
     }
 
-    public List<Cita> getCitasByClienteId(Long clienteId) {
-        return citaRepository.findByClienteId(clienteId);
+    public List<Cita> getCitasByClienteCedula(Long cedula) {
+        return citaRepository.findByCliente_Cedula(cedula);
     }
 
     public static class TiempoEsperaResponse {

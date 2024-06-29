@@ -20,7 +20,6 @@ public class ServicioCita implements Serializable {
     @Column(name = "horaFin")
     private LocalTime horaFin;
 
-
     @ManyToOne
     @JoinColumn(name = "idServicio")
     private Servicio servicio;

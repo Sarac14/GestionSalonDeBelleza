@@ -19,7 +19,6 @@ public class ClienteController {
     @Autowired
     private ClienteRepository clienteRepository;
 
-
     @GetMapping("/")
     public List<Cliente> obtenerServicios() {
         return clienteRepository.findAll();
@@ -37,4 +36,3 @@ public class ClienteController {
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado con cédula: " + cedula));
     }
 }
-

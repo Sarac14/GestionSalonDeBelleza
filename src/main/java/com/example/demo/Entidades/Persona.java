@@ -30,9 +30,9 @@ public class Persona {
     private String correoElectronico;
 
     @Column(name = "telefono")
-    private int telefono;
+    private Long telefono;
 
-    public Persona(Long cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, int telefono) {
+    public Persona(Long cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, Long telefono) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -85,11 +85,11 @@ public class Persona {
         this.correoElectronico = correoElectronico;
     }
 
-    public int getTelefono() {
+    public Long getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(Long telefono) {
         this.telefono = telefono;
     }
 

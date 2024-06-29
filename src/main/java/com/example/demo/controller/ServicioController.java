@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.Entidades.Cliente;
 import com.example.demo.Entidades.Servicio;
+import com.example.demo.Entidades.ServicioCita;
 import com.example.demo.repositorios.ServicioRepository;
 import com.example.demo.servicios.ClienteService;
 import com.example.demo.servicios.ServicioService;

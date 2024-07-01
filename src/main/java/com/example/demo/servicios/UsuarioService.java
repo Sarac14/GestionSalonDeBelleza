@@ -100,4 +100,37 @@ public class UsuarioService {
         return false;
     }
 
+
+
+    public void actualizarUsuario(Usuario usuarioExistente, Usuario usuarioActualizado) {
+        Persona personaExistente = usuarioExistente.getPersona();
+        Persona personaActualizada = usuarioActualizado.getPersona();
+
+        personaExistente.setNombre(personaActualizada.getNombre());
+        personaExistente.setApellido(personaActualizada.getApellido());
+        personaExistente.setFechaNacimiento(personaActualizada.getFechaNacimiento());
+        personaExistente.setCorreoElectronico(personaActualizada.getCorreoElectronico());
+        personaExistente.setTelefono(personaActualizada.getTelefono());
+
+        personaRepository.save(personaExistente);
+
+        // Solo actualizar la contraseña si se proporciona una nueva y es diferente a la existente
+        if (usuarioActualizado.getPassword() != null && !usuarioActualizado.getPassword().isEmpty() &&
+                !passwordEncoder.matches(usuarioActualizado.getPassword(), usuarioExistente.getPassword())) {
+            String encodedNewPassword = passwordEncoder.encode(usuarioActualizado.getPassword());
+            usuarioExistente.setPassword(encodedNewPassword);
+
+            // Línea de depuración
+            System.out.println("Nueva contraseña codificada: " + encodedNewPassword);
+        }
+
+        usuarioExistente.setRoles(usuarioActualizado.getRoles());
+
+        usuarioRepository.save(usuarioExistente);
+    }
+
+    public Usuario findByCedula(Long cedula) {
+        return usuarioRepository.findByPersona_Cedula(cedula);
+    }
+
 }

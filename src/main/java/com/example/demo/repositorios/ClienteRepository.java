@@ -8,5 +8,5 @@ import java.util.Optional;
 
 
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
-    Optional<Cliente> findByCedula(Long cedula);
+    Optional<Cliente> findFirstByCedula(Long cedula);
 }

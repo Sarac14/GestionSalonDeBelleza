@@ -32,7 +32,8 @@ public class ClienteController {
 
     @GetMapping("/clienteCedula/{cedula}")
     public Cliente obtenerClientePorCedula(@PathVariable Long cedula) {
-        return clienteRepository.findByCedula(cedula).orElseThrow(() ->
+        return clienteRepository.findFirstByCedula(cedula).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado con cédula: " + cedula));
     }
+
 }

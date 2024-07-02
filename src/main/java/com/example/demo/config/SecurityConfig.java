@@ -72,7 +72,8 @@ public class SecurityConfig {
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/productoProveedor/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/servicios/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/empleados/**"))
-
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/clientes/**"))
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/empleados/**"))
 
                 )
                 .authorizeHttpRequests(authorization -> authorization

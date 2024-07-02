@@ -1,5 +1,6 @@
 package com.example.demo.servicios;
 
+import com.example.demo.Entidades.Cliente;
 import com.example.demo.Entidades.Persona;
 import com.example.demo.Entidades.Usuario;
 import com.example.demo.Entidades.Rol;
@@ -45,18 +46,19 @@ public class UsuarioService {
     }
 
     public void registrarNuevoUsuario(Usuario usuario) {
-        Persona persona = new Persona();
-        persona.setCedula(usuario.getPersona().getCedula());
-        persona.setNombre(usuario.getPersona().getNombre());
-        persona.setApellido(usuario.getPersona().getApellido());
-        persona.setFechaNacimiento(usuario.getPersona().getFechaNacimiento());
-        persona.setCorreoElectronico(usuario.getPersona().getCorreoElectronico());
-        persona.setTelefono(usuario.getPersona().getTelefono());
+        // Crear una nueva instancia de Cliente y asignar los valores desde Persona
+        Cliente cliente = new Cliente();
+        cliente.setCedula(usuario.getPersona().getCedula());
+        cliente.setNombre(usuario.getPersona().getNombre());
+        cliente.setApellido(usuario.getPersona().getApellido());
+        cliente.setFechaNacimiento(usuario.getPersona().getFechaNacimiento());
+        cliente.setCorreoElectronico(usuario.getPersona().getCorreoElectronico());
+        cliente.setTelefono(usuario.getPersona().getTelefono());
 
-        persona = personaRepository.save(persona);
+        // Asignar el cliente a la persona del usuario
+        usuario.setPersona(cliente);
 
-        usuario.setPersona(persona);
-
+        // Manejar los roles del usuario
         List<Rol> roles = new ArrayList<>();
         boolean esCliente = false;
         if (usuario.getRoles() != null && !usuario.getRoles().isEmpty()) {
@@ -75,16 +77,8 @@ public class UsuarioService {
 
         usuarioRepository.save(usuario);
 
-        if (esCliente) {
-            clienteService.crearCliente(persona);
-        }
-        usuarioRepository.save(usuario);
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
         System.out.println("Roles del usuario: " + usuario.getRoles());
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
-
     }
-
 
     public Usuario findByUsername(String username) {
         return usuarioRepository.findByUsername(username);
@@ -99,7 +93,6 @@ public class UsuarioService {
         }
         return false;
     }
-
 
 
     public void actualizarUsuario(Usuario usuarioExistente, Usuario usuarioActualizado) {

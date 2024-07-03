@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image:  smct0001/gestion-salon-belleza:p9
+    image:  smct0001/gestion-salon-belleza:p11
     build: .
     ports:
       - "${PUERTO_APP:-8080}:8080"

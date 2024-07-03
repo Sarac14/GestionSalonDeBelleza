@@ -2,6 +2,7 @@ package com.example.demo.servicios;
 
 import com.example.demo.Entidades.Producto;
 import com.example.demo.Entidades.ProductoProveedor;
+import com.example.demo.Entidades.ProductoProveedorId;
 import com.example.demo.Entidades.Proveedor;
 import com.example.demo.repositorios.ProductoRepository;
 import com.example.demo.repositorios.ProveedorRepository;
@@ -36,6 +37,12 @@ public class ProductoService {
         for (ProductoProveedor productoProveedor : producto.getProveedoresProducto()) {
             Proveedor proveedor = proveedorRepository.findById(productoProveedor.getProveedor().getId())
                     .orElseThrow(() -> new ProviderNotFoundException("Proveedor not found"));
+
+            ProductoProveedorId productoProveedorId = new ProductoProveedorId();
+            productoProveedorId.setProductoId(producto.getId());
+            productoProveedorId.setProveedorId(proveedor.getId());
+
+            productoProveedor.setId(productoProveedorId);
             productoProveedor.setProveedor(proveedor);
             productoProveedor.setProducto(producto);
             proveedoresProducto.add(productoProveedor);

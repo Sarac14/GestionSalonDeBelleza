@@ -36,7 +36,7 @@ public class Producto {
     @Column(name = "cantidad_pedido_automatico")
     private int cantidadPedidoAutomatico;
 
-    @OneToMany(mappedBy = "producto",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "producto", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private Set<ProductoProveedor> proveedoresProducto = new HashSet<>();
 

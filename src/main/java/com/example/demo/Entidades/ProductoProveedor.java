@@ -21,7 +21,7 @@ public class ProductoProveedor {
     private Producto producto;*/
     @ManyToOne
     @MapsId("productoId")
-    @JoinColumn(name = "producto_id", insertable = false, updatable = false)
+    @JoinColumn(name = "producto_id")
     @JsonBackReference
     private Producto producto;
 

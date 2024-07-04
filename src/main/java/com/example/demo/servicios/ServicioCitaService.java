@@ -16,4 +16,9 @@ public class ServicioCitaService {
         return servicioCitaRepository.findByCitaId(citaId);
     }
 
+    public List<ServicioCita> findByEmpleadoId(Long empleadoId) {
+        return servicioCitaRepository.findByEmpleadoId(empleadoId);
+    }
+
+
 }

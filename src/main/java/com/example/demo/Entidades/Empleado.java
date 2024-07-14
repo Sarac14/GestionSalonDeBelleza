@@ -1,10 +1,11 @@
 package com.example.demo.Entidades;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,12 +20,15 @@ public class Empleado extends Persona implements Serializable {
     private String categoria;
 
     @Column(name = "horaEntrada")
+    @JsonFormat(pattern = "H:mm")
     private LocalTime horaEntrada;
 
     @Column(name = "horaSalida")
+    @JsonFormat(pattern = "H:mm")
     private LocalTime horaSalida;
 
     @Column(name = "horaComida")
+    @JsonFormat(pattern = "H:mm")
     private LocalTime horaComida;
 
     @Column(name = "diaLibre")
@@ -37,6 +41,11 @@ public class Empleado extends Persona implements Serializable {
     @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("empleado-facturas")
     private List<Factura> facturas;
+    //@JsonManagedReference
+    //@JsonIgnore
+    @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("empleado-servicioCitas")
+    private List<ServicioCita> servicioCitas;
 
     public Empleado(Long cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, Long telefono, String genero, String direccion, Nomina nomina, String Categoria) {
         super(cedula, nombre, apellido, fechaNacimiento, correoElectronico, telefono);
@@ -46,6 +55,10 @@ public class Empleado extends Persona implements Serializable {
         this.categoria = categoria;
     }
 
+    @JsonProperty("servicioCitas")
+    public List<ServicioCita> getServicioCitas() {
+        return servicioCitas;
+    }
     public Empleado() {
 
     }
@@ -134,6 +147,14 @@ public class Empleado extends Persona implements Serializable {
 
     public void setFacturas(List<Factura> facturas) {
         this.facturas = facturas;
+    }
+
+/*    public List<ServicioCita> getServicioCitas() {
+        return servicioCitas;
+    }*/
+
+    public void setServicioCitas(List<ServicioCita> servicioCitas) {
+        this.servicioCitas = servicioCitas;
     }
 }
 

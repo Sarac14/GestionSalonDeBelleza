@@ -2,9 +2,11 @@ package com.example.demo.Entidades;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
@@ -17,15 +19,18 @@ public class ServicioCita implements Serializable {
     @Column(name = "horaInicio")
     private LocalTime horaInicio;
 
+    @Column(name = "fecha")
+    private LocalDate fecha;
+
     @Column(name = "horaFin")
     private LocalTime horaFin;
 
     @ManyToOne
     @JoinColumn(name = "idServicio")
     private Servicio servicio;
-
     @ManyToOne
     @JoinColumn(name = "idEmpleado")
+    @JsonBackReference("empleado-servicioCitas")
     private Empleado empleado;
 
     @JsonBackReference
@@ -103,6 +108,14 @@ public class ServicioCita implements Serializable {
 
     public void setHoraFin(LocalTime horaFin) {
         this.horaFin = horaFin;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
     }
 
     public void calcularHoraServicio(LocalTime horaInicial) {

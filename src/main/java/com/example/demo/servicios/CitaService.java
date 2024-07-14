@@ -79,6 +79,8 @@ public class CitaService {
             newServicioCita.setEmpleado(empleado);
             newServicioCita.setHoraInicio(horaInicio);
             newServicioCita.setHoraFin(horaFin);
+            newServicioCita.setFecha(cita.getFecha());
+
 
             serviciosCita.add(newServicioCita);
 

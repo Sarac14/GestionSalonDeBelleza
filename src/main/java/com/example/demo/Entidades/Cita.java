@@ -27,6 +27,7 @@ public class Cita implements Serializable {
     private LocalDate fecha;
 
     @Column(name = "hora")
+    @JsonFormat(pattern = "H:mm")
     private LocalTime hora;
 
     @Column(name = "vigente")

@@ -15,4 +15,6 @@ public class EmpleadoService {
                 .orElseThrow(() -> new ClassNotFoundException("Cliente no encontrado con ID: " + empleadoId));
     }
 
+   
+
 }

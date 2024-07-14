@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface ServicioCitaRepository extends JpaRepository<ServicioCita, Integer> {
     List<ServicioCita> findByCitaId(Long citaId);
+
+    List<ServicioCita> findByEmpleadoId(Long empleadoId);
 }

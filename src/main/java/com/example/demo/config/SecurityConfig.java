@@ -76,6 +76,8 @@ public class SecurityConfig {
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/clientes/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/empleados/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/clientes/**"))
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/performance/**"))
+
 
                 )
                 .authorizeHttpRequests(authorization -> authorization
@@ -88,6 +90,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/factura/**")).hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENTE")
 
                         .requestMatchers(new AntPathRequestMatcher("/productos/**")).hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/performance/**")).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/proveedores/**")).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/productoProveedores/**")).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/productos/nuevoProducto")).hasAuthority("ROLE_ADMIN")

@@ -33,6 +33,10 @@ public class Factura {
     @JoinColumn(name = "descuento")
     private float descuento;
 
+    @JoinColumn(name = "idCita")
+    private Long idCita;
+
+
     @JoinColumn(name = "impuesto")
     private float impuesto;
 
@@ -152,5 +156,13 @@ public class Factura {
 
     public void setSubTotal(float subTotal) {
         this.subTotal = subTotal;
+    }
+
+    public Long getIdCita() {
+        return idCita;
+    }
+
+    public void setIdCita(Long idCita) {
+        this.idCita = idCita;
     }
 }

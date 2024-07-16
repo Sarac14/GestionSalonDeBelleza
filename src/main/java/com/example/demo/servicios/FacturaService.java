@@ -24,6 +24,7 @@ public class FacturaService {
         factura.setDescuento(descuento);
         factura.setImpuesto(impuesto);
         factura.setMetodoPago(metodoPago);
+        factura.setIdCita(cita.getId());
         detalle.getCita().setVigente(false);
 
         // Calcular subTotal y totalPagar basado en los detalles de la cita

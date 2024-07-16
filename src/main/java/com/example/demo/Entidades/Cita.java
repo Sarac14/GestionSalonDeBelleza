@@ -41,11 +41,18 @@ public class Cita implements Serializable {
     @JsonManagedReference("cita-detalles")
     private List<Detalle> detalles = new ArrayList<>();
 
-    public Cita(Long id, Cliente cliente, LocalDate fecha, LocalTime  hora) {
+    public Cita(Cliente cliente, LocalDate fecha, LocalTime  hora) {
+        this.cliente = cliente;
+        this.fecha = fecha;
+        this.hora = hora;
+    }
+
+    public Cita(Long id, Cliente cliente, LocalDate fecha, LocalTime  hora, List<ServicioCita> serviciosCita) {
         this.id = id;
         this.cliente = cliente;
         this.fecha = fecha;
         this.hora = hora;
+        this.serviciosCita = serviciosCita;
     }
 
 
@@ -100,5 +107,13 @@ public class Cita implements Serializable {
 
     public void setVigente(boolean vigente) {
         this.vigente = vigente;
+    }
+
+    public List<Detalle> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<Detalle> detalles) {
+        this.detalles = detalles;
     }
 }

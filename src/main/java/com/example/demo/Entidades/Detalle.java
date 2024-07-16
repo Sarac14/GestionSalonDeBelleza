@@ -67,4 +67,5 @@ public class Detalle implements Serializable {
     public void setCita(Cita cita) {
         this.cita = cita;
     }
+
 }

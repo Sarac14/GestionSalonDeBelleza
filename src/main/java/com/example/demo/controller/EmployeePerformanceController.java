@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.Entidades.EmployeePerformance;
+import com.example.demo.performance.EmployeePerformance;
 import com.example.demo.servicios.EmployeePerformanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

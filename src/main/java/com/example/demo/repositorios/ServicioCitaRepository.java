@@ -18,4 +18,6 @@ public interface ServicioCitaRepository extends JpaRepository<ServicioCita, Inte
     List<ServicioCita> findByEmpleadoIdAndFechaBetween(Long employeeId, LocalDate startDate, LocalDate  endDate);
 
     List<ServicioCita> findByEmpleadoCategoriaAndFechaBetween (String categoria, LocalDate startDate, LocalDate endDate);
+
+    List<ServicioCita> findByFechaBetween(LocalDate startDate, LocalDate endDate);
 }

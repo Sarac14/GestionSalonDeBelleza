@@ -1,6 +1,6 @@
 package com.example.demo.servicios;
 
-import com.example.demo.Entidades.EmployeePerformance;
+import com.example.demo.performance.EmployeePerformance;
 import com.example.demo.Entidades.Factura;
 import com.example.demo.Entidades.ServicioCita;
 import com.example.demo.repositorios.FacturaRepository;

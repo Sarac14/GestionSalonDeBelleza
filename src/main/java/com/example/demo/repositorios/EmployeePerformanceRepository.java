@@ -1,6 +1,6 @@
 package com.example.demo.repositorios;
 
-import com.example.demo.Entidades.EmployeePerformance;
+import com.example.demo.performance.EmployeePerformance;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -7,6 +7,21 @@ COPY . /GestionSalonDeBelleza
 # Stage 2: Production image
 FROM openjdk:17-alpine
 VOLUME /app/logs/GestionSalonDeBelleza
+
+# Instalar dependencias necesarias
+RUN apk add --no-cache \
+    freetype \
+    fontconfig \
+    ttf-dejavu \
+    libx11 \
+    libxext \
+    libxrender \
+    libxtst \
+    libxi
+
+# Configurar la variable de entorno para el modo headless
+ENV JAVA_TOOL_OPTIONS="-Djava.awt.headless=true"
+
 ARG PORT=8080
 ENV SERVER_PORT=${PORT}
 EXPOSE ${PORT}

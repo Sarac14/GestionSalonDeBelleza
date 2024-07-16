@@ -9,8 +9,6 @@ import com.example.demo.repositorios.ProductoProveedorRepository;
 import com.example.demo.repositorios.ProductoRepository;
 import com.example.demo.repositorios.ProveedorRepository;
 import com.example.demo.servicios.ProductoProveedorService;
-import com.example.demo.servicios.ProductoService;
-import com.example.demo.servicios.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

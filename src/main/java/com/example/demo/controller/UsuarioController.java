@@ -52,6 +52,15 @@ public class UsuarioController {
         }
     }*/
 
+    @GetMapping("/buscar")
+    public ResponseEntity<?> buscarUsuarios(@RequestParam String query) {
+        List<Usuario> usuarios = usuarioService.buscarUsuarios(query);
+        if (usuarios.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuarios);
+    }
+
     @PostMapping("/actualizar/{cedula}")
     public ResponseEntity<?> actualizarUsuario(@PathVariable Long cedula, @RequestBody Usuario usuarioActualizado, @RequestHeader("Authorization") String token) {
         if (token == null || !token.startsWith("Bearer ")) {

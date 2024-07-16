@@ -126,4 +126,13 @@ public class UsuarioService {
         return usuarioRepository.findByPersona_Cedula(cedula);
     }
 
+    public List<Usuario> buscarUsuarios(String query) {
+        Long cedula = null;
+        try {
+            cedula = Long.parseLong(query);
+        } catch (NumberFormatException e) {
+            // Si no se puede convertir a Long, dejamos cedula como null
+        }
+        return usuarioRepository.findByPersonaCedulaOrUsernameContaining(cedula, query);
+    }
 }

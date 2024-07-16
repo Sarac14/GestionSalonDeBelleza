@@ -58,6 +58,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/notifications/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/usuario/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/cita/**"))
@@ -78,6 +79,7 @@ public class SecurityConfig {
 
                 )
                 .authorizeHttpRequests(authorization -> authorization
+                        .requestMatchers(new AntPathRequestMatcher("/notifications/**")).hasRole("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/empleado/**")).hasRole("EMPLEADO")
                         .requestMatchers(new AntPathRequestMatcher("/clientes/**")).hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENTE")

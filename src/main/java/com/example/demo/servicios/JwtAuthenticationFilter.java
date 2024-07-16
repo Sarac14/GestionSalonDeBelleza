@@ -79,6 +79,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean checkAccess(String requestURI, List<String> authorities) {
+        if (requestURI.startsWith("/notifications/")) {
+            return authorities.contains("ROLE_ADMIN");
+        }
         if (requestURI.startsWith("/admin/")) {
             return authorities.contains("ROLE_ADMIN");
         }

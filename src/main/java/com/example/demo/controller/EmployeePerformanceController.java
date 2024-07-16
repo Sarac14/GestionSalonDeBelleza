@@ -22,6 +22,15 @@ public class EmployeePerformanceController {
         EmployeePerformance performance = performanceService.calculatePerformance(id, startDate, endDate);
         return new ResponseEntity<>(performance, HttpStatus.OK);
     }
+    /*
+    EJEMPLO DEL JSON
+     {
+    "employeeId": 1,
+    "reportDate": "2024-07-15",
+    "totalIncome": 1200.50,
+    "appointmentCount": 15
+    }
+    */
 
     @GetMapping("/categoria/{category}")
     public ResponseEntity<List<EmployeePerformance>> getPerformanceByCategory(
@@ -29,4 +38,27 @@ public class EmployeePerformanceController {
         List<EmployeePerformance> performances = performanceService.calculatePerformanceByCategory(category, startDate, endDate);
         return new ResponseEntity<>(performances, HttpStatus.OK);
     }
+    /*
+    [
+    {
+        "employeeId": 1,
+        "reportDate": "2024-07-15",
+        "totalIncome": 1200.50,
+        "appointmentCount": 15
+    },
+    {
+        "employeeId": 2,
+        "reportDate": "2024-07-15",
+        "totalIncome": 950.75,
+        "appointmentCount": 10
+    },
+    {
+        "employeeId": 3,
+        "reportDate": "2024-07-15",
+        "totalIncome": 1100.00,
+        "appointmentCount": 12
+    }
+]
+
+     */
 }

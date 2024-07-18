@@ -22,4 +22,20 @@ public class ServicioService {
         return horaInicio.plus(duration);
     }
 
+    public List<Servicio> getAllServicios() {
+        return servicioRepository.findAll();
+    }
+
+    public Servicio getServicioById(Long id) {
+        return servicioRepository.findById(id).orElse(null);
+    }
+
+    public Servicio saveOrUpdateServicio(Servicio servicio) {
+        return servicioRepository.save(servicio);
+    }
+
+    public void deleteServicio(Long id) {
+        servicioRepository.deleteById(id);
+    }
+
 }

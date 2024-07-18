@@ -4,9 +4,10 @@ import com.example.demo.Entidades.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.demo.Entidades.Servicio;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
-public interface ServicioRepository extends JpaRepository<Servicio, Integer> {
+@Repository
+public interface ServicioRepository extends JpaRepository<Servicio, Long> {
 
 }

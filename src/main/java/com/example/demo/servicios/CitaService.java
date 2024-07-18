@@ -57,7 +57,7 @@ public class CitaService {
         LocalTime currentHoraInicio = cita.getHora();
 
         for (ServicioCita servicioCita : cita.getServiciosCita()) {
-            Servicio servicio = servicioRepository.findById(Math.toIntExact(servicioCita.getServicio().getId()))
+            Servicio servicio = servicioRepository.findById(servicioCita.getServicio().getId())
                     .orElseThrow(() -> new NoSuchElementException("Servicio no encontrado"));
             Empleado empleado = empleadoRepository.findById(Math.toIntExact(servicioCita.getEmpleado().getId()))
                     .orElseThrow(() -> new NoSuchElementException("Empleado no encontrado"));

@@ -51,6 +51,7 @@ public class CitaService {
         newCita.setHora(cita.getHora());
         newCita.setCliente(cliente);
         newCita.setVigente(true);
+        newCita.setHabilitado(true);
 
         List<ServicioCita> serviciosCita = new ArrayList<>();
         LocalTime currentHoraInicio = cita.getHora();

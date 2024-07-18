@@ -33,6 +33,9 @@ public class Cita implements Serializable {
     @Column(name = "vigente")
     private boolean vigente = true;
 
+    @Column(name = "habilitado")
+    private boolean habilitado = true;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ServicioCita> serviciosCita = new ArrayList<>();
@@ -54,8 +57,6 @@ public class Cita implements Serializable {
         this.hora = hora;
         this.serviciosCita = serviciosCita;
     }
-
-
 
     public Cita() {
 
@@ -116,4 +117,13 @@ public class Cita implements Serializable {
     public void setDetalles(List<Detalle> detalles) {
         this.detalles = detalles;
     }
+
+    public boolean isHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
+    }
+
 }

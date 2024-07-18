@@ -46,6 +46,19 @@ public class CitaController {
         citaRepository.deleteById(Math.toIntExact(id));
     }
 
+    @PutMapping("/{id}/deshabilitar")
+    public ResponseEntity<Void> deshabilitarCita(@PathVariable Long id) {
+        Optional<Cita> optionalCita = citaRepository.findById(Math.toIntExact(id));
+        if (optionalCita.isPresent()) {
+            Cita cita = optionalCita.get();
+            cita.setHabilitado(false);
+            citaRepository.save(cita);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     // Actualizar una cita
 //    @PutMapping("/modificar/{id}")
 //    public Cita actualizarDetallesDeCita(@PathVariable Long id, @RequestBody Cita citaActualizada) {

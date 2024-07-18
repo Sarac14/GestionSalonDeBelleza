@@ -90,6 +90,33 @@ public class UsuarioController {
         }
     }
 
+    @PostMapping("/cambiar-contrasena/{cedula}")
+    public ResponseEntity<?> cambiarContraseña(@PathVariable Long cedula,
+                                               @RequestBody Map<String, String> passwords,
+                                               @RequestHeader("Authorization") String token) {
+        if (token == null || !token.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token faltante o en formato incorrecto");
+        }
+
+        token = token.substring(7);
+
+        try {
+            String currentPassword = passwords.get("currentPassword");
+            String newPassword = passwords.get("newPassword");
+
+            if (currentPassword == null || newPassword == null) {
+                return ResponseEntity.badRequest().body("Se requieren contraseña actual y nueva contraseña");
+            }
+
+            usuarioService.changePassword(cedula, currentPassword, newPassword);
+            return ResponseEntity.ok("Contraseña cambiada con éxito");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor");
+        }
+    }
+
     @GetMapping("/me")
     public ResponseEntity<?> obtenerDatosUsuario(@RequestHeader("Authorization") String token) {
         if (token != null && token.startsWith("Bearer ")) {

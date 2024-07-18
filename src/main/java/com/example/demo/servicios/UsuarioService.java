@@ -96,6 +96,18 @@ public class UsuarioService {
 
 
     public void actualizarUsuario(Usuario usuarioExistente, Usuario usuarioActualizado) {
+        Persona personaExistente = getPersona(usuarioExistente, usuarioActualizado);
+
+        personaRepository.save(personaExistente);
+
+        // Actualizamos los roles solo si se proporcionan
+        if (usuarioActualizado.getRoles() != null && !usuarioActualizado.getRoles().isEmpty()) {
+            usuarioExistente.setRoles(usuarioActualizado.getRoles());
+        }
+        usuarioRepository.save(usuarioExistente);
+    }
+
+    private static Persona getPersona(Usuario usuarioExistente, Usuario usuarioActualizado) {
         Persona personaExistente = usuarioExistente.getPersona();
         Persona personaActualizada = usuarioActualizado.getPersona();
 
@@ -104,22 +116,7 @@ public class UsuarioService {
         personaExistente.setFechaNacimiento(personaActualizada.getFechaNacimiento());
         personaExistente.setCorreoElectronico(personaActualizada.getCorreoElectronico());
         personaExistente.setTelefono(personaActualizada.getTelefono());
-
-        personaRepository.save(personaExistente);
-
-        // Solo actualizar la contraseña si se proporciona una nueva y es diferente a la existente
-        if (usuarioActualizado.getPassword() != null && !usuarioActualizado.getPassword().isEmpty() &&
-                !passwordEncoder.matches(usuarioActualizado.getPassword(), usuarioExistente.getPassword())) {
-            String encodedNewPassword = passwordEncoder.encode(usuarioActualizado.getPassword());
-            usuarioExistente.setPassword(encodedNewPassword);
-
-            // Línea de depuración
-            System.out.println("Nueva contraseña codificada: " + encodedNewPassword);
-        }
-
-        usuarioExistente.setRoles(usuarioActualizado.getRoles());
-
-        usuarioRepository.save(usuarioExistente);
+        return personaExistente;
     }
 
     public Usuario findByCedula(Long cedula) {
@@ -134,5 +131,20 @@ public class UsuarioService {
             // Si no se puede convertir a Long, dejamos cedula como null
         }
         return usuarioRepository.findByPersonaCedulaOrUsernameContaining(cedula, query);
+    }
+
+    public void changePassword(Long cedula, String currentPassword, String newPassword) {
+        Usuario usuario = usuarioRepository.findByPersona_Cedula(cedula);
+        if (usuario == null) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+
+        if (!passwordEncoder.matches(currentPassword, usuario.getPassword())) {
+            throw new RuntimeException("Contraseña actual incorrecta");
+        }
+
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
+        usuario.setPassword(encodedNewPassword);
+        usuarioRepository.save(usuario);
     }
 }

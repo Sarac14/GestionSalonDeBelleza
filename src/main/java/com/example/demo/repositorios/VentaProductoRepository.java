@@ -12,4 +12,8 @@ import java.util.List;
 public interface VentaProductoRepository extends JpaRepository<VentaProducto, Long> {
     @Query("SELECT vp FROM VentaProducto vp WHERE vp.detalle.cita.fecha BETWEEN :startDate AND :endDate")
     List<VentaProducto> findByFechaBetween(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    List<VentaProducto> findByEmpleadoId(Long empleadoId);
+
+    List<VentaProducto> findByDetalle_Cita_ClienteId(Long clienteId);
 }

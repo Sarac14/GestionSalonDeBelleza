@@ -103,6 +103,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (requestURI.startsWith("/reportes-servicios")) {
             return authorities.contains("ROLE_ADMIN");
         }
+        if (requestURI.startsWith("/reportes-ventas")) {
+            return authorities.contains("ROLE_ADMIN");
+        }
         if (requestURI.startsWith("/reportes-inventario")) {
             return authorities.contains("ROLE_ADMIN");
         }

@@ -3,9 +3,7 @@ package com.example.demo.Entidades;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "usuario")
@@ -32,12 +30,8 @@ public class Usuario implements Serializable {
     )
     private List<Rol> roles;
 
-    public Usuario(Long id, String username, String password, Persona persona) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.persona = persona;
-    }
+    @Column(name = "habilitado")
+    private boolean habilitado = true;
 
     public Usuario(String username, String password, Persona persona, List<Rol> roles) {
         this.username = username;
@@ -47,7 +41,6 @@ public class Usuario implements Serializable {
     }
 
     public Usuario() {
-
     }
 
     public Long getId() {
@@ -90,5 +83,11 @@ public class Usuario implements Serializable {
         this.roles = roles;
     }
 
+    public boolean isHabilitado() {
+        return habilitado;
+    }
 
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
+    }
 }

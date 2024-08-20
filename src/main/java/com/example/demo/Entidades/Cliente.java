@@ -45,5 +45,3 @@ public class Cliente extends Persona {
         this.idClienteCita = idClienteCita;
     }
 }
-
-

@@ -20,7 +20,15 @@ public class NotificationController {
     @PostMapping("/send")
     public ResponseEntity<String> sendEmail(@RequestBody EmailDTO emailDTO) {
         try {
-            emailService.sendEmail(emailDTO);
+            if (emailDTO.getType().equalsIgnoreCase("appointment")) {
+                emailService.sendAppointmentConfirmationEmail(emailDTO);
+            } else if (emailDTO.getType().equalsIgnoreCase("general")) {
+                emailService.sendGeneralNotificationEmail(emailDTO);
+            } else if (emailDTO.getType().equalsIgnoreCase("exclusivo")) {
+                emailService.sendExclusivaNotificationEmail(emailDTO);
+            }else {
+                return ResponseEntity.badRequest().body("Tipo de email no soportado.");
+            }
             return ResponseEntity.ok("Email enviado con éxito");
         } catch (MessagingException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al enviar el email: " + e.getMessage());

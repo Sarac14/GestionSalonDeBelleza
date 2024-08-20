@@ -1,7 +1,9 @@
 package com.example.demo.servicios;
 
+import com.example.demo.DTOs.EmailDTO;
 import com.example.demo.Entidades.*;
 import com.example.demo.repositorios.*;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,9 @@ public class CitaService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private ServicioRepository servicioRepository;
@@ -116,7 +121,29 @@ public class CitaService {
             servicioCitaRepository.save(servicioCita); // Guarda el servicio de la cita en la base de datos
         }
 
+        enviarNotificacionCita(citaGuardada);
         return citaRepository.save(citaGuardada);
+    }
+
+    private void enviarNotificacionCita(Cita cita) {
+        // Crear el contenido del correo
+        EmailDTO emailDTO = new EmailDTO();
+        emailDTO.setDestinatarios(List.of(cita.getCliente().getCorreoElectronico()));
+        emailDTO.setAsunto("Confirmación de cita");
+
+        String mensaje = String.format("Estimado %s, su cita ha sido confirmada para el día %s a las %s.",
+                cita.getCliente().getNombre(),
+                cita.getFecha().toString(),
+                cita.getHora().toString());
+
+        emailDTO.setMensaje(mensaje);
+
+        try {
+            emailService.sendEmailWithTemplate(emailDTO, "confirmation_cita");
+            System.out.println("Correo de confirmación enviado con éxito a: " + cita.getCliente().getCorreoElectronico());
+        } catch (MessagingException e) {
+            System.err.println("Error al enviar el correo de confirmación: " + e.getMessage());
+        }
     }
 
     private boolean estaEmpleadoDisponible(Empleado empleado, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin) {
@@ -155,7 +182,6 @@ public class CitaService {
         serviciosCitaExistente.addAll(citaActualizada.getServiciosCita());
         serviciosCitaExistente.forEach(servicioCita -> servicioCita.setCita(citaExistente));
 
-        // Guardar la cita actualizada en la base de datos
         return citaRepository.save(citaExistente);
     }
 

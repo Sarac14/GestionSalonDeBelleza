@@ -6,6 +6,8 @@ public class EmailDTO {
     private List<String> destinatarios;
     private String asunto;
     private String mensaje;
+    private String type;
+
 
 
     public List<String> getDestinatarios() {
@@ -31,4 +33,8 @@ public class EmailDTO {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
+
+    public String getType() { return type; }
+
+    public void setType(String type) { this.type = type; }
 }

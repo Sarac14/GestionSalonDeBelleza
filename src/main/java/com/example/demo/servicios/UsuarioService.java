@@ -4,6 +4,7 @@ import com.example.demo.Entidades.Cliente;
 import com.example.demo.Entidades.Persona;
 import com.example.demo.Entidades.Usuario;
 import com.example.demo.Entidades.Rol;
+import com.example.demo.Entidades.Empleado;
 import com.example.demo.repositorios.PersonaRepository;
 import com.example.demo.repositorios.RolRepository;
 import com.example.demo.repositorios.UsuarioRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -46,7 +48,6 @@ public class UsuarioService {
     }
 
     public void registrarNuevoUsuario(Usuario usuario) {
-        // Crear una nueva instancia de Cliente y asignar los valores desde Persona
         Cliente cliente = new Cliente();
         cliente.setCedula(usuario.getPersona().getCedula());
         cliente.setNombre(usuario.getPersona().getNombre());
@@ -55,7 +56,6 @@ public class UsuarioService {
         cliente.setCorreoElectronico(usuario.getPersona().getCorreoElectronico());
         cliente.setTelefono(usuario.getPersona().getTelefono());
 
-        // Asignar el cliente a la persona del usuario
         usuario.setPersona(cliente);
 
         // Manejar los roles del usuario
@@ -94,6 +94,27 @@ public class UsuarioService {
         return false;
     }
 
+    public boolean deshabilitarUsuario(String username) {
+        Optional<Usuario> usuarioOpt = Optional.ofNullable(usuarioRepository.findByUsername(username));
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            usuario.setHabilitado(false);
+            usuarioRepository.save(usuario);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean habilitarUsuario(String username) {
+        Optional<Usuario> usuarioOpt = Optional.ofNullable(usuarioRepository.findByUsername(username));
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            usuario.setHabilitado(true);
+            usuarioRepository.save(usuario);
+            return true;
+        }
+        return false;
+    }
 
     public void actualizarUsuario(Usuario usuarioExistente, Usuario usuarioActualizado) {
         Persona personaExistente = getPersona(usuarioExistente, usuarioActualizado);
@@ -147,4 +168,49 @@ public class UsuarioService {
         usuario.setPassword(encodedNewPassword);
         usuarioRepository.save(usuario);
     }
+
+    /*public void registrarNuevoUsuarioEmpleado(Usuario usuario) {
+        System.out.println("Tipo de Persona recibido: " + usuario.getPersona().getClass().getName());
+
+        if (usuario.getPersona() instanceof Empleado) {
+            Empleado empleadoExistente = (Empleado) usuario.getPersona();
+
+            Empleado empleado = new Empleado();
+            empleado.setCedula(empleadoExistente.getCedula());
+            empleado.setNombre(empleadoExistente.getNombre());
+            empleado.setApellido(empleadoExistente.getApellido());
+            empleado.setFechaNacimiento(empleadoExistente.getFechaNacimiento());
+            empleado.setCorreoElectronico(empleadoExistente.getCorreoElectronico());
+            empleado.setTelefono(empleadoExistente.getTelefono());
+            empleado.setGenero(empleadoExistente.getGenero());
+            empleado.setDireccion(empleadoExistente.getDireccion());
+            empleado.setCategoria(empleadoExistente.getCategoria());
+            empleado.setHoraEntrada(empleadoExistente.getHoraEntrada());
+            empleado.setHoraSalida(empleadoExistente.getHoraSalida());
+            empleado.setHoraComida(empleadoExistente.getHoraComida());
+            empleado.setDiaLibre(empleadoExistente.getDiaLibre());
+
+            usuario.setPersona(empleado);
+        } else {
+            throw new IllegalArgumentException("La persona asociada no es de tipo Empleado.");
+        }
+
+        // Manejar los roles del usuario
+        List<Rol> roles = new ArrayList<>();
+        Rol rolEmpleado = rolRepository.findByDescripcion("ROLE_EMPLEADO");
+        if (rolEmpleado == null) {
+            rolEmpleado = new Rol("ROLE_EMPLEADO");
+            rolRepository.save(rolEmpleado);
+        }
+        roles.add(rolEmpleado);
+        usuario.setRoles(roles);
+
+        // Encriptar la contraseña
+        String encodedPassword = passwordEncoder.encode(usuario.getPassword());
+        usuario.setPassword(encodedPassword);
+
+        // Guardar el usuario
+        usuarioRepository.save(usuario);
+    }*/
+
 }

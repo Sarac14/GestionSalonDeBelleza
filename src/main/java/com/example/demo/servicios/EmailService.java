@@ -27,7 +27,20 @@ public class EmailService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public void sendEmail(EmailDTO emailDTO) throws MessagingException {
+    public void sendAppointmentConfirmationEmail(EmailDTO emailDTO) throws MessagingException {
+        sendEmailWithTemplate(emailDTO, "confirmation_cita");
+    }
+
+
+    public void sendGeneralNotificationEmail(EmailDTO emailDTO) throws MessagingException {
+        sendEmailWithTemplate(emailDTO, "notification_general");
+    }
+
+    public void sendExclusivaNotificationEmail(EmailDTO emailDTO) throws MessagingException {
+        sendEmailWithTemplate(emailDTO, "notification_exclusiva");
+    }
+
+    void sendEmailWithTemplate(EmailDTO emailDTO, String templateName) throws MessagingException {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -37,12 +50,12 @@ public class EmailService {
 
             Context context = new Context();
             context.setVariable("mensaje", emailDTO.getMensaje());
-            String htmlContent = templateEngine.process("email", context);
+            String htmlContent = templateEngine.process(templateName, context);
 
             helper.setText(htmlContent, true);
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {
-            throw new MessagingException("Error al enviar el correo: "+ e.getMessage());
+            throw new MessagingException("Error al enviar el correo: " + e.getMessage());
         }
     }
 

@@ -36,22 +36,6 @@ public class UsuarioController {
         return ResponseEntity.ok("Usuario registrado con éxito");
     }
 
-    /*@PostMapping("/actualizar/{cedula}")
-    public ResponseEntity<?> actualizarUsuario(@PathVariable Long cedula, @RequestBody Usuario usuarioActualizado, @RequestHeader("Authorization") String token) {
-
-        if (token == null || !token.startsWith("Bearer ")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token faltante o en formato incorrecto");
-        }
-        try {
-            Usuario usuarioExistente = usuarioService.findByCedula(cedula);
-            System.out.println(usuarioExistente.getPersona().getNombre());
-            usuarioService.actualizarUsuario(usuarioExistente, usuarioActualizado);
-            return ResponseEntity.ok("Usuario actualizado con éxito");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido");
-        }
-    }*/
-
     @GetMapping("/buscar")
     public ResponseEntity<?> buscarUsuarios(@RequestParam String query) {
         List<Usuario> usuarios = usuarioService.buscarUsuarios(query);
@@ -119,7 +103,7 @@ public class UsuarioController {
 
     @GetMapping("/me")
     public ResponseEntity<?> obtenerDatosUsuario(@RequestHeader("Authorization") String token) {
-        if (token != null && token.startsWith("Bearer ")) {
+        if (token != null && token.startsWith("Bearer")) {
             token = token.substring(7);
             try {
                 Claims claims = jwtService.extractAllClaims(token);
@@ -169,6 +153,36 @@ public class UsuarioController {
             return ResponseEntity.ok(new JwtResponse(token));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Nombre de usuario o contraseña incorrectos");
+        }
+    }
+
+    @PutMapping("/{username}/deshabilitar")
+    public ResponseEntity<String> deshabilitarUsuario(@PathVariable String username) {
+        boolean resultado = usuarioService.deshabilitarUsuario(username);
+        if (resultado) {
+            return ResponseEntity.ok("Usuario deshabilitado correctamente.");
+        } else {
+            return ResponseEntity.badRequest().body("No se pudo deshabilitar el usuario.");
+        }
+    }
+
+    @PutMapping("/{username}/habilitar")
+    public ResponseEntity<String> habilitarUsuario(@PathVariable String username) {
+        boolean resultado = usuarioService.habilitarUsuario(username);
+        if (resultado) {
+            return ResponseEntity.ok("Usuario habilitado correctamente.");
+        } else {
+            return ResponseEntity.badRequest().body("No se pudo habilitar el usuario.");
+        }
+    }
+
+    @PostMapping("/registrar-empleado")
+    public ResponseEntity<?> registrarUsuarioEmpleado(@RequestBody Usuario usuario) {
+        try {
+            //usuarioService.registrarNuevoUsuarioEmpleado(usuario);
+            return ResponseEntity.ok("Usuario empleado registrado con éxito");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al registrar usuario empleado: " + e.getMessage());
         }
     }
 }

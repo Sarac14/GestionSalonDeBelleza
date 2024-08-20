@@ -81,8 +81,6 @@ public class SecurityConfig {
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/reportes-inventario/**"))
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/reportes-ventas/**"))
 
-
-
                 )
                 .authorizeHttpRequests(authorization -> authorization
                         .requestMatchers(new AntPathRequestMatcher("/notifications/**")).hasRole("ADMIN")
@@ -104,6 +102,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/productos/nuevoProducto")).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/materiaPrimas/**")).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/productoVenta/**")).hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/usuario/{username}/deshabilitar")).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/usuario/registrar")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/usuario/login")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/usuario/")).hasAuthority("ROLE_ADMIN")

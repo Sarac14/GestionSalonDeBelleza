@@ -28,6 +28,11 @@ public class VentaProducto {
     @Column(name = "cantidad")
     private int cantidad;
 
+
+    @ManyToOne
+    @JoinColumn(name = "factura_id")
+    private Factura factura;
+
     public VentaProducto() {
     }
 
@@ -76,4 +81,11 @@ public class VentaProducto {
         return productoVenta.getPrecioVenta() * comisionRate;
     }
 
+    public Factura getFactura() {
+        return factura;
+    }
+
+    public void setFactura(Factura factura) {
+        this.factura = factura;
+    }
 }

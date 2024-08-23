@@ -48,7 +48,7 @@ public class CitaService {
         System.out.println("Creando nueva cita...");
         System.out.println("Cita recibida: " + cita);
 
-        Cliente cliente = clienteRepository.findById(Math.toIntExact(cita.getCliente().getId()))
+        Cliente cliente = clienteRepository.findById(cita.getCliente().getId())
                 .orElseThrow(() -> new NoSuchElementException("Cliente no encontrado"));
 
         // Crear la cita

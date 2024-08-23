@@ -25,7 +25,7 @@ public class ClienteService {
     }
 
     public Cliente findById(Long clienteId) throws ClassNotFoundException {
-        return clienteRepository.findById(Math.toIntExact(clienteId))
+        return clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new ClassNotFoundException("Cliente no encontrado con ID: " + clienteId));
     }
 

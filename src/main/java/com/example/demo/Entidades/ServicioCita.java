@@ -44,16 +44,25 @@ public class ServicioCita implements Serializable {
     @JsonBackReference("servicio-cita-detalle")
     private Detalle detalle;
 
-    public ServicioCita(Long id, Cita cita, Servicio servicio, Empleado empleado) {
-        this.id = id;
+    public ServicioCita(Cita cita, Servicio servicio, Empleado empleado) {
         this.cita = cita;
         this.servicio = servicio;
         this.empleado = empleado;
     }
 
+    public ServicioCita(Cita cita, Servicio servicio, Empleado empleado, LocalTime horaInicio, LocalTime horaFin) {
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+        this.servicio = servicio;
+        this.empleado = empleado;
+        this.cita = cita;
+    }
+
     public ServicioCita() {
 
     }
+
+
 
     public Long getId() {
         return id;

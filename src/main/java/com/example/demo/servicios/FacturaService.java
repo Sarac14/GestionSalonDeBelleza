@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -16,7 +17,7 @@ public class FacturaService {
     private FacturaRepository facturaRepository;
 
     public Factura crearFactura(Cliente cliente, Empleado empleado, Cita cita, Detalle detalle,
-                                float descuento, float impuesto, String metodoPago) {
+                                float descuento, float impuesto, String metodoPago,  List<VentaProducto> ventasProductos) {
         Factura factura = new Factura();
         factura.setCliente(cliente);
         factura.setEmpleado(empleado);
@@ -32,6 +33,15 @@ public class FacturaService {
         factura.setSubTotal(subTotal);
 
         float totalPagar = calcularTotalPagar(subTotal, descuento, impuesto);
+
+        // Calcular subtotal y total a pagar considerando las ventas de productos
+        float subTotalProductos = 0;
+        for (VentaProducto ventaProducto : ventasProductos) {
+            subTotalProductos += ventaProducto.getCantidad() * ventaProducto.getProductoVenta().getPrecioVenta();
+        }
+        totalPagar += subTotalProductos;
+
+        factura.setSubTotal(subTotal + subTotalProductos);
         factura.setTotalPagar(totalPagar);
 
         // Asignar el detalle a la factura

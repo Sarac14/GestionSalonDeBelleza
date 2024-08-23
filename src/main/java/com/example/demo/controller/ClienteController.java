@@ -26,7 +26,7 @@ public class ClienteController {
 
     @GetMapping("/cliente/{id}")
     public Cliente obtenerClientePorId(@PathVariable Long id) {
-        return clienteRepository.findById(Math.toIntExact(id)).orElseThrow(() ->
+        return clienteRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado con ID: " + id));
     }
 

@@ -7,6 +7,6 @@ import com.example.demo.Entidades.Cliente;
 import java.util.Optional;
 
 
-public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
+public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     Optional<Cliente> findFirstByCedula(Long cedula);
 }

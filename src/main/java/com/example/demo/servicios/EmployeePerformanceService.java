@@ -1,5 +1,6 @@
 package com.example.demo.servicios;
 
+import com.example.demo.Entidades.Cita;
 import com.example.demo.performance.EmployeePerformance;
 import com.example.demo.Entidades.Factura;
 import com.example.demo.Entidades.ServicioCita;
@@ -35,14 +36,20 @@ public class EmployeePerformanceService {
         double totalIncome = serviciosCita.stream()
                 .mapToDouble(sc -> {
                     // Obtiene la Cita (cita) vinculada al ServicioCita actual
-                    Long idCita = sc.getCita().getId();
+                    Cita cita = sc.getCita();
 
-                    // Encuentra la Factura (factura) asociada a la Cita
-                    Factura factura = facturaRepository.findByIdCita(idCita);
+                    // Verifica si la cita está deshabilitada (habilitada == false)
+                    if (!cita.isVigente()) {
+                        // Encuentra la Factura (factura) asociada a la Cita
+                        Factura factura = facturaRepository.findByIdCita(cita.getId());
 
-                    // Divide el monto total de la factura por el número de servicios en la Cita
-                    // para obtener el ingreso por servicio para este ServicioCita
-                    return factura.getTotalPagar() / sc.getCita().getServiciosCita().size();
+                        // Divide el monto total de la factura por el número de servicios en la Cita
+                        // para obtener el ingreso por servicio para este ServicioCita
+                        return factura.getTotalPagar() / cita.getServiciosCita().size();
+                    }
+
+                    // Si la cita está habilitada, retorna 0 para no afectar la suma total
+                    return 0.0;
                 })
                 .sum();
 

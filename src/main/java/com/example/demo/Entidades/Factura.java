@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "factura")
@@ -52,8 +53,10 @@ public class Factura {
     @JoinColumn(name = "subTotal")
     private float subTotal;
 
+    @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VentaProducto> ventasProductos;
+
     public Factura(Long id, Cliente cliente, Empleado empleado, Detalle detalle, Date fechaEmision, float descuento, float impuesto, String metodoPago, float cambio, float totalPagar, float subTotal) {
-        this.id = id;
         this.cliente = cliente;
         this.empleado = empleado;
         this.detalle = detalle;
@@ -64,6 +67,12 @@ public class Factura {
         this.cambio = cambio;
         this.totalPagar = totalPagar;
         this.subTotal = subTotal;
+    }
+
+    public Factura(Long idCita, float totalPagar, String metodoPago) {
+        this.idCita = idCita;
+        this.metodoPago = metodoPago;
+        this.totalPagar = totalPagar;
     }
 
     public Factura() {
@@ -164,5 +173,13 @@ public class Factura {
 
     public void setIdCita(Long idCita) {
         this.idCita = idCita;
+    }
+
+    public List<VentaProducto> getVentasProductos() {
+        return ventasProductos;
+    }
+
+    public void setVentasProductos(List<VentaProducto> ventasProductos) {
+        this.ventasProductos = ventasProductos;
     }
 }

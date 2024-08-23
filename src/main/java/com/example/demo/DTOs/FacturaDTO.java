@@ -1,5 +1,7 @@
 package com.example.demo.DTOs;
 
+import java.util.List;
+
 public class FacturaDTO {
 
     private Long clienteId;
@@ -8,6 +10,8 @@ public class FacturaDTO {
     private float descuento;
     private float impuesto;
     private String metodoPago;
+    private List<VentaProductoDTO> ventasProductos;
+
 
 
     public Long getClienteId() {
@@ -56,5 +60,13 @@ public class FacturaDTO {
 
     public void setMetodoPago(String metodoPago) {
         this.metodoPago = metodoPago;
+    }
+
+    public List<VentaProductoDTO> getVentasProductos() {
+        return ventasProductos;
+    }
+
+    public void setVentasProductos(List<VentaProductoDTO> ventasProductos) {
+        this.ventasProductos = ventasProductos;
     }
 }

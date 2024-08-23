@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.Entidades.Cita;
+import com.example.demo.Entidades.Empleado;
 import com.example.demo.repositorios.CitaRepository;
 import com.example.demo.servicios.CitaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,12 @@ public class CitaController {
         return citaRepository.findAll();
     }
 
+    @GetMapping("/{id}/empleados")
+    public ResponseEntity<List<Empleado>> obtenerEmpleadosPorCita(@PathVariable Long id) {
+        List<Empleado> empleados = citaService.obtenerEmpleadosPorCita(id);
+        return ResponseEntity.ok(empleados);
+    }
+
     // Leer una cita por ID
     @GetMapping("/{id}")
     public Optional<Cita> obtenerCitaPorId(@PathVariable Long id) {
@@ -59,11 +66,11 @@ public class CitaController {
         }
     }
 
-    // Actualizar una cita
-//    @PutMapping("/modificar/{id}")
-//    public Cita actualizarDetallesDeCita(@PathVariable Long id, @RequestBody Cita citaActualizada) {
-//        return citaService.actualizarDetallesDeCita(id, citaActualizada);
-//    }
+//  Actualizar una cita
+//   @PutMapping("/modificar/{id}")
+//   public Cita actualizarDetallesDeCita(@PathVariable Long id, @RequestBody Cita citaActualizada) {
+//      return citaService.actualizarDetallesDeCita(id, citaActualizada);
+//   }
 
     @PutMapping("/modificar/{id}")
     public ResponseEntity<Cita> actualizarDetallesDeCita(@PathVariable Long id, @RequestBody Cita citaActualizada) {

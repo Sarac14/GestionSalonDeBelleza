@@ -1,11 +1,12 @@
 package com.example.demo.Entidades;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,15 +21,15 @@ public class Empleado extends Persona implements Serializable {
     private String categoria;
 
     @Column(name = "horaEntrada")
-    @JsonFormat(pattern = "H:mm")
+    @JsonDeserialize(using = LocalTimeDeserializer.class)
     private LocalTime horaEntrada;
 
     @Column(name = "horaSalida")
-    @JsonFormat(pattern = "H:mm")
+    @JsonDeserialize(using = LocalTimeDeserializer.class)
     private LocalTime horaSalida;
 
     @Column(name = "horaComida")
-    @JsonFormat(pattern = "H:mm")
+    @JsonDeserialize(using = LocalTimeDeserializer.class)
     private LocalTime horaComida;
 
     @Column(name = "diaLibre")
@@ -41,6 +42,7 @@ public class Empleado extends Persona implements Serializable {
     @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("empleado-facturas")
     private List<Factura> facturas;
+
     //@JsonManagedReference
     //@JsonIgnore
     @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)

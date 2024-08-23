@@ -179,10 +179,13 @@ public class UsuarioController {
     @PostMapping("/registrar-empleado")
     public ResponseEntity<?> registrarUsuarioEmpleado(@RequestBody Usuario usuario) {
         try {
-            //usuarioService.registrarNuevoUsuarioEmpleado(usuario);
+            usuarioService.registrarNuevoUsuarioEmpleado(usuario);
             return ResponseEntity.ok("Usuario empleado registrado con éxito");
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Error al registrar usuario empleado: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error interno del servidor al registrar usuario empleado: " + e.getMessage());
         }
     }
 }

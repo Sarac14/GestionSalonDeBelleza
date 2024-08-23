@@ -169,6 +169,69 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
+    public void registrarNuevoUsuarioEmpleado(Usuario usuario) {
+        Persona persona = usuario.getPersona();
+
+        // Verificar si la persona es una instancia de Empleado
+        if (!(persona instanceof Empleado)) {
+            throw new IllegalArgumentException("La persona asociada al usuario no es un Empleado");
+        }
+
+        Empleado empleado = (Empleado) persona;
+
+        // Manejar los roles del usuario
+        List<Rol> roles = new ArrayList<>();
+        Rol rolEmpleado = rolRepository.findByDescripcion("ROLE_EMPLEADO");
+        if (rolEmpleado == null) {
+            rolEmpleado = new Rol("ROLE_EMPLEADO");
+            rolRepository.save(rolEmpleado);
+        }
+        roles.add(rolEmpleado);
+        usuario.setRoles(roles);
+
+        // Encriptar la contraseña
+        String encodedPassword = passwordEncoder.encode(usuario.getPassword());
+        usuario.setPassword(encodedPassword);
+
+        // Guardar el usuario
+        usuarioRepository.save(usuario);
+    }
+
+
+    /*public void registrarNuevoUsuarioEmpleado(Usuario usuario) {
+        Persona personaDeUsuario = usuario.getPersona();
+
+        // Verificar si la persona asociada al usuario es de tipo Empleado
+        if (personaDeUsuario instanceof Empleado) {
+            Empleado empleado = (Empleado) personaDeUsuario;
+
+            // Crear un nuevo usuario con el empleado existente
+            Usuario nuevoUsuario = new Usuario();
+            nuevoUsuario.setUsername(usuario.getUsername());
+            nuevoUsuario.setPassword(usuario.getPassword());
+            nuevoUsuario.setPersona(empleado);
+
+            // Manejar los roles del usuario
+            List<Rol> roles = new ArrayList<>();
+            Rol rolEmpleado = rolRepository.findByDescripcion("ROLE_EMPLEADO");
+            if (rolEmpleado == null) {
+                rolEmpleado = new Rol("ROLE_EMPLEADO");
+                rolRepository.save(rolEmpleado);
+            }
+            roles.add(rolEmpleado);
+            nuevoUsuario.setRoles(roles);
+
+            // Encriptar la contraseña
+            String encodedPassword = passwordEncoder.encode(nuevoUsuario.getPassword());
+            nuevoUsuario.setPassword(encodedPassword);
+
+            // Guardar el usuario
+            usuarioRepository.save(nuevoUsuario);
+        } else {
+            throw new IllegalArgumentException("La persona asociada al usuario no es de tipo Empleado.");
+        }
+    }*/
+
     /*public void registrarNuevoUsuarioEmpleado(Usuario usuario) {
         System.out.println("Tipo de Persona recibido: " + usuario.getPersona().getClass().getName());
 

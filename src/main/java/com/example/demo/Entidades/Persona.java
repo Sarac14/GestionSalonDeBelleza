@@ -1,11 +1,14 @@
 package com.example.demo.Entidades;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Empleado.class, name = "empleado"),
+        @JsonSubTypes.Type(value = Cliente.class, name = "cliente")
+})
 @Entity
 @Table(name = "persona")
 @Inheritance(strategy = InheritanceType.JOINED)

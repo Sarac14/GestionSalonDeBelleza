@@ -28,6 +28,7 @@ public class ServicioCita implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idServicio")
     private Servicio servicio;
+
     @ManyToOne
     @JoinColumn(name = "idEmpleado")
     @JsonBackReference("empleado-servicioCitas")

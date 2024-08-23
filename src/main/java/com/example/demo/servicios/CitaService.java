@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CitaService {
@@ -87,7 +88,6 @@ public class CitaService {
             newServicioCita.setHoraFin(horaFin);
             newServicioCita.setFecha(cita.getFecha());
 
-
             serviciosCita.add(newServicioCita);
 
             // Actualizar la hora de inicio para el siguiente servicio
@@ -123,6 +123,15 @@ public class CitaService {
 
         enviarNotificacionCita(citaGuardada);
         return citaRepository.save(citaGuardada);
+    }
+
+    public List<Empleado> obtenerEmpleadosPorCita(Long citaId) {
+        Cita cita = citaRepository.findById(Math.toIntExact(citaId))
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada con id: " + citaId));
+
+        return cita.getServiciosCita().stream()
+                .map(ServicioCita::getEmpleado)
+                .collect(Collectors.toList());
     }
 
     private void enviarNotificacionCita(Cita cita) {

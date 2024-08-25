@@ -44,10 +44,11 @@ public class Empleado extends Persona implements Serializable {
     private List<Factura> facturas;
 
     //@JsonManagedReference
-    //@JsonIgnore
+    /*@JsonIgnore
     @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("empleado-servicioCitas")
-    private List<ServicioCita> servicioCitas;
+    //@JsonBackReference("empleado-servicioCitas")
+    @JsonBackReference
+    private List<ServicioCita> servicioCitas;*/
 
     public Empleado(Long cedula, String nombre, String apellido, String fechaNacimiento, String correoElectronico, Long telefono, String genero, String direccion, Nomina nomina, String Categoria) {
         super(cedula, nombre, apellido, fechaNacimiento, correoElectronico, telefono);
@@ -57,10 +58,10 @@ public class Empleado extends Persona implements Serializable {
         this.categoria = categoria;
     }
 
-    @JsonProperty("servicioCitas")
+  /*  @JsonProperty("servicioCitas")
     public List<ServicioCita> getServicioCitas() {
         return servicioCitas;
-    }
+    }*/
     public Empleado() {
 
     }
@@ -155,7 +156,7 @@ public class Empleado extends Persona implements Serializable {
         return servicioCitas;
     }*/
 
-    public void setServicioCitas(List<ServicioCita> servicioCitas) {
+   /* public void setServicioCitas(List<ServicioCita> servicioCitas) {
         this.servicioCitas = servicioCitas;
-    }
+    }*/
 }

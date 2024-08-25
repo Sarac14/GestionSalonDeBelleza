@@ -31,7 +31,8 @@ public class ServicioCita implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "idEmpleado")
-    @JsonBackReference("empleado-servicioCitas")
+    //@JsonManagedReference("empleado-servicioCitas")
+    //@JsonIgnore
     private Empleado empleado;
 
     @JsonBackReference

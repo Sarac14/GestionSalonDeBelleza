@@ -16,6 +16,13 @@ public class FacturaService {
     @Autowired
     private FacturaRepository facturaRepository;
 
+    public void imprimirConsola(){
+        List<Factura> facturas = facturaRepository.findAll();
+        for (Factura fc: facturas) {
+           System.out.println(fc.getCliente().nombre);
+            System.out.println(fc.getEmpleado().nombre);
+        }
+    }
     public Factura crearFactura(Cliente cliente, Empleado empleado, Cita cita, Detalle detalle,
                                 float descuento, float impuesto, String metodoPago,  List<VentaProducto> ventasProductos) {
         Factura factura = new Factura();
@@ -24,6 +31,7 @@ public class FacturaService {
         factura.setFechaEmision(new Date());
         factura.setDescuento(descuento);
         factura.setImpuesto(impuesto);
+        factura.setMetodoPago(metodoPago);
         factura.setMetodoPago(metodoPago);
         factura.setIdCita(cita.getId());
         detalle.getCita().setVigente(false);

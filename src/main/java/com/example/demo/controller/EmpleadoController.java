@@ -25,10 +25,10 @@ public class EmpleadoController {
         return empleadoRepository.findAll();
     }
 
-    @GetMapping("/servicios/{id}")
+   @GetMapping("/servicios/{id}")
     public List<ServicioCita> obtenerServiciosEmpleado(@PathVariable Long id) {
         Empleado empleado = empleadoRepository.findById(Math.toIntExact(id)).orElseThrow();
-        List<ServicioCita> serviciosEmpleado = empleado.getServicioCitas();
+        List<ServicioCita> serviciosEmpleado = servicioCitaRepository.findByEmpleadoId(id);
         return serviciosEmpleado;
     }
 }

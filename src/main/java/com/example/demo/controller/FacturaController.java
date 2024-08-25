@@ -8,10 +8,7 @@ import com.example.demo.servicios.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,14 +38,21 @@ public class FacturaController {
    /* @Autowired
     private DetalleService detalleService;*/
 
+    @GetMapping("/")
+    public List<Factura> obtenerFacturas() {
+        facturaService.imprimirConsola();
+        return facturaRepository.findAll();
+    }
+
+
     @PostMapping("/crear")
-    public ResponseEntity<Factura> crearFactura(@RequestBody FacturaDTO facturaRequest) throws ClassNotFoundException {
-        Cliente cliente = clienteService.findById(facturaRequest.getClienteId());
-        Empleado empleado = empleadoService.findById(facturaRequest.getEmpleadoId());
-        Cita cita = citaService.findById(facturaRequest.getCitaId());
+    public ResponseEntity<Factura> crearFactura(@RequestBody Factura facturaRequest) throws ClassNotFoundException {
+        Cliente cliente = clienteService.findById(facturaRequest.getCliente().getId());
+        Empleado empleado = empleadoService.findById(facturaRequest.getEmpleado().getId());
+        Cita cita = citaService.findById(facturaRequest.getIdCita());
         Detalle detalle = cita.getServiciosCita().get(0).getDetalle();
 
-        List<VentaProductoDTO> ventasProductos = facturaRequest.getVentasProductos();
+        List<VentaProducto> ventasProductos = facturaRequest.getVentasProductos();
 
 
         if (cliente == null || empleado == null || cita == null || detalle == null) {
@@ -56,9 +60,9 @@ public class FacturaController {
         }
 
         List<VentaProducto> ventasProductosEntity = new ArrayList<>();
-        for (VentaProductoDTO ventaProductoDTO : facturaRequest.getVentasProductos()) {
+        for (VentaProducto ventaProductoDTO : facturaRequest.getVentasProductos()) {
             VentaProducto ventaProducto = new VentaProducto();
-            ventaProducto.setProductoVenta(productoVentaService.findById(ventaProductoDTO.getProductoVentaId()));
+            ventaProducto.setProductoVenta(productoVentaService.findById(ventaProductoDTO.getProductoVenta().getId()));
             ventaProducto.setCantidad(ventaProductoDTO.getCantidad());
             ventasProductosEntity.add(ventaProducto);
         }
@@ -68,6 +72,11 @@ public class FacturaController {
         factura.setVentasProductos(ventasProductosEntity);
 
         factura = facturaRepository.save(factura);
+
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+        ResponseEntity<Factura> responseEntity = new ResponseEntity<>(factura, HttpStatus.CREATED);
+
+        System.out.println(responseEntity.getStatusCodeValue());
 
         return new ResponseEntity<>(factura, HttpStatus.CREATED);
     }

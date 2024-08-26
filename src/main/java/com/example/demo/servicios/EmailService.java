@@ -1,6 +1,7 @@
 package com.example.demo.servicios;
 
 import com.example.demo.DTOs.EmailDTO;
+import com.example.demo.Entidades.Factura;
 import com.example.demo.repositorios.UsuarioRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -31,7 +32,6 @@ public class EmailService {
         sendEmailWithTemplate(emailDTO, "confirmation_cita");
     }
 
-
     public void sendGeneralNotificationEmail(EmailDTO emailDTO) throws MessagingException {
         sendEmailWithTemplate(emailDTO, "notification_general");
     }
@@ -58,6 +58,27 @@ public class EmailService {
             throw new MessagingException("Error al enviar el correo: " + e.getMessage());
         }
     }
+    public void sendFacturaEmail(EmailDTO emailDTO, Factura factura) throws MessagingException {
+        Context context = new Context();
+        context.setVariable("idFactura", factura.getId().toString());
+        context.setVariable("nombreCliente", factura.getCliente().getNombre());
+        context.setVariable("nombreEmpleado", factura.getEmpleado().getNombre());
+        context.setVariable("fechaEmision", factura.getFechaEmision().toString());
+        context.setVariable("totalPagar", String.format("%.2f", factura.getTotalPagar()));
+        context.setVariable("mensaje", emailDTO.getMensaje());
+
+        String htmlContent = templateEngine.process("factura_template", context);
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+
+        helper.setTo(emailDTO.getDestinatarios().toArray(new String[0]));
+        helper.setSubject(emailDTO.getAsunto());
+        helper.setText(htmlContent, true);
+
+        javaMailSender.send(mimeMessage);
+    }
+
 
     public List<String> getAllClientEmails() {
         return usuarioRepository.findAllClientEmails();
@@ -69,5 +90,9 @@ public class EmailService {
 
     public List<String> getAllUserEmails() {
         return usuarioRepository.findAllUserEmails();
+    }
+
+    public void sendFacturaEmail(EmailDTO emailDTO) throws MessagingException {
+        sendEmailWithTemplate(emailDTO, "factura_template");
     }
 }

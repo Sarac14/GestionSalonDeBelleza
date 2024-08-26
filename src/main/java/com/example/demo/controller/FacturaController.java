@@ -5,6 +5,7 @@ import com.example.demo.DTOs.VentaProductoDTO;
 import com.example.demo.Entidades.*;
 import com.example.demo.repositorios.FacturaRepository;
 import com.example.demo.servicios.*;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class FacturaController {
 
 
     @PostMapping("/crear")
-    public ResponseEntity<Factura> crearFactura(@RequestBody Factura facturaRequest) throws ClassNotFoundException {
+    public ResponseEntity<Factura> crearFactura(@RequestBody Factura facturaRequest) throws ClassNotFoundException, MessagingException {
         Cliente cliente = clienteService.findById(facturaRequest.getCliente().getId());
         Empleado empleado = empleadoService.findById(facturaRequest.getEmpleado().getId());
         Cita cita = citaService.findById(facturaRequest.getIdCita());
@@ -76,6 +77,7 @@ public class FacturaController {
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
         ResponseEntity<Factura> responseEntity = new ResponseEntity<>(factura, HttpStatus.CREATED);
 
+        facturaService.enviarFacturaPorCorreo(factura);
         System.out.println(responseEntity.getStatusCodeValue());
 
         return new ResponseEntity<>(factura, HttpStatus.CREATED);

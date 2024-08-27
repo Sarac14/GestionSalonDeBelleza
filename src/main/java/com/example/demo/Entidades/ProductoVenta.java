@@ -11,6 +11,9 @@ import java.util.Set;
 @Table(name = "productoVenta")
 public class ProductoVenta extends Producto{
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name = "precioVenta")
     private float precioVenta;
 
@@ -25,6 +28,16 @@ public class ProductoVenta extends Producto{
         super(marca, nombre, descripcion, cantidadStock, precioCompra, cantidadMinima, cantidadPedidoAutomatico, proveedores);
         this.precioVenta = precioVenta;
         this.descuento = descuento;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public ProductoVenta() {

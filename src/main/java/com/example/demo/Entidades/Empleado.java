@@ -39,9 +39,9 @@ public class Empleado extends Persona implements Serializable {
     @JoinColumn(name = "nomina_id")
     private Nomina nomina;
 
-    @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
+   /* @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("empleado-facturas")
-    private List<Factura> facturas;
+    private List<Factura> facturas;*/
 
     //@JsonManagedReference
     /*@JsonIgnore
@@ -144,13 +144,13 @@ public class Empleado extends Persona implements Serializable {
         this.diaLibre = diaLibre;
     }
 
-    public List<Factura> getFacturas() {
+/*    public List<Factura> getFacturas() {
         return facturas;
     }
 
     public void setFacturas(List<Factura> facturas) {
         this.facturas = facturas;
-    }
+    }*/
 
 /*    public List<ServicioCita> getServicioCitas() {
         return servicioCitas;

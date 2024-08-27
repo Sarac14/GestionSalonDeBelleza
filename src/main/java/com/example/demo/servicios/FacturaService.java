@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,8 +29,7 @@ public class FacturaService {
             System.out.println(fc.getEmpleado().nombre);
         }
     }
-    public Factura crearFactura(Cliente cliente, Empleado empleado, Cita cita, Detalle detalle,
-                                float descuento, float impuesto, String metodoPago,  List<VentaProducto> ventasProductos) throws MessagingException {
+    public Factura crearFactura(Cliente cliente, Empleado empleado, Cita cita, Detalle detalle, float descuento, float impuesto, String metodoPago, List<VentaProducto> ventasProductos) throws MessagingException {
         Factura factura = new Factura();
         factura.setCliente(cliente);
         factura.setEmpleado(empleado);
@@ -37,35 +37,37 @@ public class FacturaService {
         factura.setDescuento(descuento);
         factura.setImpuesto(impuesto);
         factura.setMetodoPago(metodoPago);
-        factura.setMetodoPago(metodoPago);
         factura.setIdCita(cita.getId());
-        detalle.getCita().setVigente(false);
 
-        // Calcular subTotal y totalPagar basado en los detalles de la cita
-        float subTotal = calcularSubTotal(detalle);
-        factura.setSubTotal(subTotal);
+        cita.setVigente(false);
 
-        float totalPagar = calcularTotalPagar(subTotal, descuento, impuesto);
+        // Asignar la factura a cada VentaProducto
+        for (VentaProducto ventaProducto : ventasProductos) {
+            ventaProducto.setFactura(factura);
+        }
+
+        // Guardar la Factura con las Ventas de Productos asociadas
+        factura.setVentasProductos(ventasProductos);
 
         // Calcular subtotal y total a pagar considerando las ventas de productos
         float subTotalProductos = 0;
+        float cant;
         for (VentaProducto ventaProducto : ventasProductos) {
             subTotalProductos += ventaProducto.getCantidad() * ventaProducto.getProductoVenta().getPrecioVenta();
+            cant = ventaProducto.getProductoVenta().getCantidadStock() - ventaProducto.getCantidad();
+            ventaProducto.getProductoVenta().setCantidadStock((int) cant);
         }
-        totalPagar += subTotalProductos;
 
-        factura.setSubTotal(subTotal + subTotalProductos);
+        float subTotal = calcularSubTotal(detalle) + subTotalProductos;
+        float totalPagar = calcularTotalPagar(subTotal, descuento, impuesto);
+
+        factura.setSubTotal(subTotal);
         factura.setTotalPagar(totalPagar);
-
-        // Asignar el detalle a la factura
         factura.setDetalle(detalle);
 
-        // Guardar la factura en la base de datos
-        factura = facturaRepository.save(factura);
-        //enviarFacturaPorCorreo(factura);
-
-        return factura;
+        return facturaRepository.save(factura);
     }
+
 
     public void enviarFacturaPorCorreo(Factura factura) throws MessagingException {
         EmailDTO emailDTO = new EmailDTO();
@@ -77,27 +79,6 @@ public class FacturaService {
         emailService.sendFacturaEmail(emailDTO, factura);
     }
 
-    /*public void enviarFacturaPorCorreo(Factura factura) throws MessagingException {
-        // Extraer datos específicos de la factura
-        String idFactura = factura.getId().toString();
-        String nombreCliente = factura.getCliente().getNombre();
-        String nombreEmpleado = factura.getEmpleado().getNombre();
-        String fechaEmision = factura.getFechaEmision().toString(); // Formatear según sea necesario
-        String totalPagar = String.format("%.2f", factura.getTotalPagar());
-
-        EmailDTO emailDTO = new EmailDTO();
-        emailDTO.setDestinatarios(List.of(factura.getCliente().getCorreoElectronico()));
-        emailDTO.setAsunto("Factura de su cita con ID: " + idFactura);
-        emailDTO.setMensaje("Adjunto encontrará la factura de su reciente cita con los siguientes detalles:\n" +
-                "ID Factura: " + idFactura + "\n" +
-                "Cliente: " + nombreCliente + "\n" +
-                "Empleado: " + nombreEmpleado + "\n" +
-                "Fecha de Emisión: " + fechaEmision + "\n" +
-                "Total a Pagar: " + totalPagar);
-
-        // Enviar el correo
-        emailService.sendFacturaEmail(emailDTO);
-    }*/
 
     private float calcularSubTotal(Detalle detalle) {
         float subTotal = 0.0f;

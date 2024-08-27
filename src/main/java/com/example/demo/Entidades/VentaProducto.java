@@ -1,6 +1,8 @@
 package com.example.demo.Entidades;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -29,9 +31,11 @@ public class VentaProducto {
     private int cantidad;
 
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "factura_id")
     private Factura factura;
+
 
     public VentaProducto() {
     }

@@ -1,8 +1,11 @@
 package com.example.demo.Entidades;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,8 +56,11 @@ public class Factura {
     @JoinColumn(name = "subTotal")
     private float subTotal;
 
-    @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<VentaProducto> ventasProductos;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL)
+    private List<VentaProducto> ventasProductos = new ArrayList<>();
+
+
 
     public Factura(Long id, Cliente cliente, Empleado empleado, Detalle detalle, Date fechaEmision, float descuento, float impuesto, String metodoPago, float cambio, float totalPagar, float subTotal) {
         this.cliente = cliente;
@@ -182,4 +188,5 @@ public class Factura {
     public void setVentasProductos(List<VentaProducto> ventasProductos) {
         this.ventasProductos = ventasProductos;
     }
+
 }

@@ -4,6 +4,7 @@ import com.example.demo.DTOs.FacturaDTO;
 import com.example.demo.DTOs.VentaProductoDTO;
 import com.example.demo.Entidades.*;
 import com.example.demo.repositorios.FacturaRepository;
+import com.example.demo.repositorios.VentaProductoRepository;
 import com.example.demo.servicios.*;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class FacturaController {
     @Autowired
     private FacturaRepository facturaRepository;
 
+    @Autowired
+    private VentaProductoRepository ventaProductoRepository;
+
    /* @Autowired
     private DetalleService detalleService;*/
 
@@ -53,24 +57,51 @@ public class FacturaController {
         Cita cita = citaService.findById(facturaRequest.getIdCita());
         Detalle detalle = cita.getServiciosCita().get(0).getDetalle();
 
-        List<VentaProducto> ventasProductos = facturaRequest.getVentasProductos();
+        //List<VentaProducto> ventasProductos = facturaRequest.getVentasProductos();
 
 
-        if (cliente == null || empleado == null || cita == null || detalle == null) {
+        /*if (cliente == null || empleado == null || cita == null || detalle == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        }*/
 
-        List<VentaProducto> ventasProductosEntity = new ArrayList<>();
+       List<VentaProducto> ventasProductosEntity = new ArrayList<>();
         for (VentaProducto ventaProductoDTO : facturaRequest.getVentasProductos()) {
             VentaProducto ventaProducto = new VentaProducto();
-            ventaProducto.setProductoVenta(productoVentaService.findById(ventaProductoDTO.getProductoVenta().getId()));
+
+      /*      // Validar si el ProductoVenta no es null
+            if (ventaProductoDTO.getProductoVenta() == null) {
+                // Manejar el caso en que no haya un producto asignado a la venta
+                continue;
+            }*/
+
+            // Buscar el producto en la base de datos
+            ProductoVenta productoVenta = productoVentaService.findById(ventaProductoDTO.getProductoVenta().getId());
+            if (productoVenta == null) {
+                continue;
+            }
+
+            ventaProducto.setProductoVenta(productoVenta);
             ventaProducto.setCantidad(ventaProductoDTO.getCantidad());
+
+/*            // Validar si el Empleado no es null
+            if (empleado == null) {
+                // Manejar el caso en que el empleado no exista
+                continue;
+            }*/
+            ventaProducto.setEmpleado(empleado);
+
             ventasProductosEntity.add(ventaProducto);
+        }
+
+        ventaProductoRepository.saveAll(ventasProductosEntity);
+
+        for (VentaProducto vp: ventasProductosEntity) {
+            System.out.println("!!!!!!!!!!!!EMPLEADO DE VENTA PRODCUTO "+vp.getEmpleado().nombre);
         }
 
         Factura factura = facturaService.crearFactura(cliente, empleado, cita, detalle, facturaRequest.getDescuento(), facturaRequest.getImpuesto(), facturaRequest.getMetodoPago(), ventasProductosEntity);
 
-        factura.setVentasProductos(ventasProductosEntity);
+       /* factura.setVentasProductos(ventasProductosEntity);
 
         factura = facturaRepository.save(factura);
 
@@ -78,7 +109,7 @@ public class FacturaController {
         ResponseEntity<Factura> responseEntity = new ResponseEntity<>(factura, HttpStatus.CREATED);
 
         facturaService.enviarFacturaPorCorreo(factura);
-        System.out.println(responseEntity.getStatusCodeValue());
+        System.out.println(responseEntity.getStatusCodeValue());*/
 
         return new ResponseEntity<>(factura, HttpStatus.CREATED);
     }

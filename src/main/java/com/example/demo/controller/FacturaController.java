@@ -88,7 +88,7 @@ public class FacturaController {
                 // Manejar el caso en que el empleado no exista
                 continue;
             }*/
-            ventaProducto.setEmpleado(empleado);
+            ventaProducto.setEmpleado(ventaProductoDTO.getEmpleado());
 
             ventasProductosEntity.add(ventaProducto);
         }

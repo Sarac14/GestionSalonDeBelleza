@@ -19,7 +19,7 @@ public class VentaProducto {
     @JsonBackReference("venta-producto-detalle")
     private Detalle detalle;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "idEmpleado")
     private Empleado empleado;
 
